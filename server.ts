@@ -5,7 +5,7 @@ const app = express();
 app.get('/', (req, res, next) => {
   res.render('home', {
     title: 'Hey',
-    message: 'My super Hero Title',
+    message: 'App List Users',
   });
 });
 
