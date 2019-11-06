@@ -50,6 +50,9 @@ testem.log
 # martin's customization
 ormconfig.yml
 
+# .env
+.env
+
 # don't ignore sample.json
 !*.sample.json
 
