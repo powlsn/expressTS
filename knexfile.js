@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+// console.log('read knexfile');
+// process.exit(0);
+
 module.exports = {
   development: {
     client: 'postgresql',

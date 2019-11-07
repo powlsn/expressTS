@@ -53,6 +53,9 @@ ormconfig.yml
 # .env
 .env
 
+# examples
+.examples
+
 # don't ignore sample.json
 !*.sample.json
 
