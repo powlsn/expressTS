@@ -1,19 +1,22 @@
 import { Model } from 'objection';
-import { knex } from '../db/knex';
-
-Model.knex(knex);
 
 export class User extends Model {
-  static get tableName(): string {
-    return 'user';
-  }
-  static get idColumn(): string {
-    return 'id';
-  }
+  // static get tableName(): string {
+  //   return 'user';
+  // }
+  static tableName = 'user';
+
+  // static get idColumn(): string {
+  //   return 'id';
+  // }
+
+  id!: number;
+
   // fullName() {
   //   return this.firstname + ' ' + this.lastname;
   // }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   static get jsonSchema() {
     return {
       type: 'object',

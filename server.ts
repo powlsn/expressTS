@@ -1,6 +1,9 @@
 import express from 'express';
 import { json, raw, text, urlencoded } from 'body-parser';
 import { v1 } from './src/app';
+import { knex } from './db/knex';
+
+knex; // establish database connection and bind models to
 
 const app = express();
 

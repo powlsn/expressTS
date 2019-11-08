@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import { getAddUser } from './getAddUser';
 import { User } from '../../models/User';
+import { getUpdateUser } from './getUpdateUser';
 
 export const postAddUser: RequestHandler = async (req, res, next) => {
   // WTF code
@@ -17,4 +18,7 @@ export const postAddUser: RequestHandler = async (req, res, next) => {
     .catch(err => {
       console.log('user not added', err);
     });
+  // const user = await User.query().insert(data);
+  // // req.params.id = user.id;
+  // return getUpdateUser(req, res, next);
 };
