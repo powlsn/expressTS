@@ -4,7 +4,7 @@ block content
     .container
         .col-md-4.text-justify
             h1.main-title #{title}
-            form(action="/add", method="post")
+            form(action="/users", method="post")
                 label(for="name") Nickname
                 input(id="name" class="form-control" type="text" name="name" aria-description="nameHelp" placeholder="Enter Nickname")
                 label(for="firstname") Firstname

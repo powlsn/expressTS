@@ -10,4 +10,5 @@ block content
                         .float-left= val
             div(class="btn-group float-right" role="group" aria-label="edit field")
                 a(href="/edit" class="btn btn-danger") Edit
-                a(href="/edit" class="btn btn-danger") Delete
+                form(method="POST" action=`/users/${user.id}/delete?_method=DELETE`)
+                    button(type="Submit" class="btn btn-danger") Delete

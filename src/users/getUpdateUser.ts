@@ -7,7 +7,7 @@ export const getUpdateUser: RequestHandler = async (req, res) => {
   if (!user) {
     message = 'User not found!';
   }
-  res.render('user-edit', {
+  return res.render('user-edit', {
     title: 'Edit User',
     message: message || '',
     user: user || {},

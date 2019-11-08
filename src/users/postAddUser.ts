@@ -1,23 +1,22 @@
 import { RequestHandler } from 'express';
-import { getAddUser } from './getAddUser';
 import { User } from '../../models/User';
-import { getUpdateUser } from './getUpdateUser';
 
-export const postAddUser: RequestHandler = async (req, res, next) => {
-  // WTF code
-  let data = req.body;
-  data = JSON.parse(JSON.stringify(data));
-  // WTF code
+export const postAddUser: RequestHandler = async (req, res) => {
+  // no validation!
+  const data = req.body;
 
-  User.query()
+  return User.query()
     .insert(data)
     .then(() => {
       console.log('user added');
-      getAddUser(req, res, next);
+      return res.status(201).redirect('/users');
     })
     .catch(err => {
       console.log('user not added', err);
+      return res.status(500).redirect('/users');
     });
+
+  // this code escape with an error
   // const user = await User.query().insert(data);
   // // req.params.id = user.id;
   // return getUpdateUser(req, res, next);

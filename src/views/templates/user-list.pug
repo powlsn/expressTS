@@ -6,13 +6,14 @@ block content
             h1.main-title #{title}
             p.main-message #{message}
             div.btn-group
-                a.btn.btn-primary.mb-2(href="/add/") Add User
+                a.btn.btn-primary.mb-2(href="/users/add") Add User
             ul(class="list-group")
             each user in users
                 li(class="list-group-item")
                     div.clearfix
                         div.float-left
-                            a(href=`/user/${user.id}/`)= user.name + ' ' + user.lastname
+                            a(href=`/users/${user.id}`)= user.name + ' ' + user.lastname
                         div(class="btn-group float-right" role="group" aria-label="edit field")
-                            a(href=`/user/${user.id}/edit/` class="btn btn-danger") Edit
-                            a(href=`/user/${user.id}/delete/` class="btn btn-danger") Delete
+                            a(href=`/users/${user.id}/edit` class="btn btn-danger") Edit
+                            form(method="POST" action=`/users/${user.id}/delete?_method=DELETE`)
+                                button(class="btn btn-danger") Delete

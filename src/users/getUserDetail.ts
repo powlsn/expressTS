@@ -8,7 +8,7 @@ export const getUserDetail: RequestHandler = async (req, res) => {
     message = 'User not found';
   }
 
-  res.render('user-detail', {
+  return res.render('user-detail', {
     title: 'User Details',
     user: user,
     message: message,
