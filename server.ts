@@ -1,19 +1,27 @@
+import path from 'path';
 import express from 'express';
-import { urlencoded } from 'body-parser';
-import { userRouter } from './src/userRouter';
-import { knex } from './db/knex';
 import methodOverride from 'method-override';
+import { urlencoded } from 'body-parser';
+import { userRouter } from './router/userRouter';
+import { knex } from './storage/knex';
 
 knex; // establish database connection and bind models to
 
-const app = express();
+const server = express();
 
-app.disable('x-powered-by');
-app.use(urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
-app.use('/', userRouter);
-app.set('view engine', 'pug');
-app.set('views', ['./src/views/templates/']);
-app.listen(3000, () => {
+// server.disable('x-powered-by'); // hide the express entry header
+server.use(urlencoded({ extended: true }));
+server.use(methodOverride('_method'));
+server.use('/static', express.static(path.resolve('./', 'public')));
+server.get('/', (req, res) => {
+  res.render('home', {
+    title: 'User Board!',
+    message: 'Welcome here ...',
+  });
+});
+server.use('/users', userRouter);
+server.set('view engine', 'pug');
+server.set('views', ['./views/', './views/users/']);
+server.listen(3000, () => {
   console.log('Server started...');
 });

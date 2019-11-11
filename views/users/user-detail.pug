@@ -1,0 +1,26 @@
+extends ../layout
+
+block contentFluid
+  .col-md-4.offset-md-1
+    h1.main-title #{title}
+
+block content
+  .col-md.text-justify
+    table.table
+      thead
+        tr
+          th(scope="col") #
+          th(scope="col") Nickname
+          th(scope="col") Firstname
+          th(scope="col") Lastname
+      tbody
+        tr
+          td(scope="row")= user.id
+          td(scope="row")= user.name
+          td(scope="row")= user.firstname
+          td(scope="row")= user.lastname
+    .clearfix
+      div(class="btn-group float-right" role="group" aria-label="edit field")
+        a(href=`/users/${user.id}/edit` class="btn btn-warning") Edit
+        form(method="POST" action=`/users/${user.id}/delete?_method=DELETE` class="btn-group")
+          button(type="Submit" class="btn btn-danger") Delete

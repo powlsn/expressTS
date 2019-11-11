@@ -1,0 +1,17 @@
+extends ../layout
+
+block contentFluid
+  .col-md-4.offset-md-1
+    h1.main-title #{title}
+
+block content
+  .col-md-4.offset-md-4.text-justify
+    form(action=`/users/${user.id}/edit?_method=PATCH` method="POST")
+      input(id="data-id" class="form-control" type="hidden" name="id" value=`${user.id}`)
+      label(for="name") Nickname
+      input(id="name" class="form-control" type="text" name="name" aria-description="nameHelp" value=`${user.name}`)
+      label(for="firstname") Firstname
+      input(id="firstname" class="form-control" type="text" name="firstname" aria-description="firstnameHelp" value=`${user.firstname}`)
+      label(for="lastname") Lastname
+      input(id="lastname" class="form-control" type="text" name="lastname" aria-description="lastnameHelp" value=`${user.lastname}`)
+      button(class="btn btn-success mt-2" type="submit") Submit
