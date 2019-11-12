@@ -66,7 +66,7 @@ export const patchUserUpdate: RequestHandler = async (req, res, next) => {
 
 export const deleteUser: RequestHandler = async (req, res) => {
   const id = req.params.id;
-  const user = deleteUserService(id);
+  const user = await deleteUserService(id);
   if (user) {
     return res.status(200).redirect('/users');
   } else {

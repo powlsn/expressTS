@@ -1,8 +1,5 @@
 require('dotenv').config();
 
-// console.log('read knexfile');
-// process.exit(0);
-
 module.exports = {
   development: {
     client: 'postgresql',
@@ -11,6 +8,15 @@ module.exports = {
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
+    },
+  },
+  test: {
+    client: 'postgresql',
+    connection: {
+      host: process.env.TEST_DB_HOST,
+      user: process.env.TEST_DB_USER,
+      password: process.env.TEST_DB_PASSWORD,
+      database: process.env.TEST_DB_DATABASE,
     },
   },
 };
