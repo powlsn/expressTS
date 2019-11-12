@@ -59,3 +59,4 @@ ormconfig.yml
 # don't ignore sample.json
 !*.sample.json
 
+.knex-migration
