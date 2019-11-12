@@ -26,7 +26,7 @@ block content
                 a(href=`/users/${user.id}` class="btn btn-success" role="button") Details
                 a(href=`/users/${user.id}/edit` class="btn btn-warning") Edit
                 form(method="POST" action=`/users/${user.id}/delete?_method=DELETE` class="btn-group")
-                  button(type="button" class="btn btn-danger") Delete
+                  button(type="submit" class="btn btn-danger") Delete
                 //- a(href=`/users/${user.id}/delete?_method=DELETE` class="btn btn-danger") Delete
   .col-md.text-justify
     div.btn-group

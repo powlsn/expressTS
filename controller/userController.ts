@@ -1,75 +1,81 @@
 import { RequestHandler } from 'express';
-import {
-  getUserService,
-  getUsersService,
-  updateUserService,
-  createUserService,
-  deleteUserService,
-} from '../services/users/userService';
+import { User } from '../models/User';
+import { transaction } from 'objection';
 
-export const getUsers: RequestHandler = async (request, response, next) => {
-  const users = await getUsersService();
+export const getUsers: RequestHandler = async (request, response) => {
+  const users = await User.query();
+
   return response.render('user-list', {
     title: 'Users List',
     users: users,
-    message: 'List of Users',
   });
 };
 
-export const getUserDetail: RequestHandler = async (req, res) => {
-  const id = parseInt(req.params.id);
-  const user = await getUserService(id);
-  return res.render('user-detail', {
+export const getUserDetail: RequestHandler = async (request, response) => {
+  const user = await User.query().findById(request.params.id);
+
+  return response.render('user-detail', {
     title: 'User Details',
     user: user,
   });
 };
 
-export const getUserCreate: RequestHandler = async (req, res) => {
-  return res.render('user-add', {
+export const getUserCreate: RequestHandler = async (request, response) => {
+  return response.render('user-add', {
     title: 'Add User',
   });
 };
 
-export const postUserCreate: RequestHandler = async (req, res) => {
-  const data = req.body; // no validation!
-  const user = await createUserService(data);
+export const postUserCreate: RequestHandler = async (request, response) => {
+  const user = await User.query().insert(request.body);
 
   if (user) {
-    return res.status(201).redirect('/users');
+    return response.status(201).redirect('/users');
   } else {
-    return res.status(500).redirect('/users');
+    return response.status(500).redirect('/users');
   }
 };
 
-export const getUserUpdate: RequestHandler = async (req, res) => {
-  const id = parseInt(req.params.id);
-  const user = (await getUserService(id)) || {};
-  return res.render('user-edit', {
+export const getUserUpdate: RequestHandler = async (request, response) => {
+  const user = await User.query().findById(request.params.id);
+  return response.render('user-edit', {
     title: 'Edit User',
     user: user,
   });
 };
 
-export const patchUserUpdate: RequestHandler = async (req, res, next) => {
-  const user = req.body;
-  const id = parseInt(req.params.id);
-  user.id = id; // need this awkward shit to change string id in the user object to number type
-  const updatedUser = await updateUserService(id, user);
+export const patchUserUpdate: RequestHandler = async (request, response) => {
+  // this code comes from the official repo
 
-  if (updatedUser) {
-    return res.status(204).redirect('/users');
-  } else {
-    return res.status(500).redirect('/users');
+  const graph = request.body;
+
+  // Make sure only one User was sent.
+  if (Array.isArray(graph)) {
+    return response.status(400).redirect('/users');
   }
+
+  // Make sure the user has the correct id because `upsertGraph` uses the id fields
+  // to determine which models need to be updated and which inserted.
+  graph.id = parseInt(request.params.id, 10);
+
+  // It's a good idea to wrap `upsertGraph` call in a transaction since it
+  // may create multiple queries.
+  const upsertedGraph = await transaction(User.knex(), trx => {
+    return (
+      User.query(trx)
+        // For security reasons, limit the relations that can be upserted.
+        .upsertGraph(graph)
+    );
+  });
+  return response.status(204).redirect('/users');
 };
 
-export const deleteUser: RequestHandler = async (req, res) => {
-  const id = req.params.id;
-  const user = await deleteUserService(id);
-  if (user) {
-    return res.status(200).redirect('/users');
+export const deleteUser: RequestHandler = async (request, response) => {
+  const user = await User.query().deleteById(request.params.id);
+
+  if (!user) {
+    return response.status(500).redirect(`/users`);
   } else {
-    return res.status(500).redirect(`/user/${id}`);
+    return response.status(200).redirect('/users');
   }
 };
