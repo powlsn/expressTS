@@ -1,8 +1,19 @@
+<<<<<<< HEAD:server.ts
 const environment = process.env.NODE_ENV || 'development';
 const config = require('./knexfile.js')[environment];
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const knex = require('knex')(config);
 import { Model } from 'objection';
+=======
+// set NODE_ENV befor startup server for test
+import Knex from 'knex';
+import { Model } from 'objection';
+const environment = process.env.NODE_ENV || 'development';
+const config = require('./knexfile')[environment];
+const knex = Knex(config);
+Model.knex(knex);
+
+>>>>>>> folder structure changed and tests integrated.:server/server.ts
 import path from 'path';
 import express from 'express';
 import methodOverride from 'method-override';
@@ -12,7 +23,7 @@ import { userRouter } from './router/userRouter';
 Model.knex(knex);
 const server = express();
 
-// server.disable('x-powered-by'); // hide the express entry header
+// server.disable('x-powered-by'); // hide Header entry for Express (Security Feature)
 server.use(urlencoded({ extended: true }));
 server.use(methodOverride('_method'));
 server.use('/static', express.static(path.resolve('./', 'public')));

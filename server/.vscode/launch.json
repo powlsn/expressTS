@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Server",
-      "program": "${workspaceFolder}/server.ts",
+      "program": "${workspaceFolder}/server/server.ts",
       "preLaunchTask": "npm: build",
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
       "outFiles": ["${workspaceFolder}/build/**/*.js"],

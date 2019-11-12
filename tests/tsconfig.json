@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    // *CRITICAL FLAG* Import non-ES modules as default imports.
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    // Search under node_modules for non-relative imports. I think 'node' is TypeScript default
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    // https://github.com/x80486/cucumber-typescript/blob/master/tsconfig.json
+    "target": "esnext",
+    // cucumber-js needs module commonjs
+    "module": "commonjs"
+  }
+}

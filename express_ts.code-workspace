@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "server"
+    },
+    {
+      "path": "tests"
+    },
+    {
+      "path": "."
+    }
+  ],
+  "launch": {
+    "configurations": [],
+    "compounds": []
+  }
+}
