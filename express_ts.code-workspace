@@ -4,14 +4,18 @@
       "path": "server"
     },
     {
-      "path": "tests"
+      "path": "."
     },
     {
-      "path": "."
+      "path": "tests"
     }
   ],
   "launch": {
-    "configurations": [],
-    "compounds": []
+    "compounds": [
+      {
+        "name": "Launch Debug Server",
+        "configurations": ["Launch Server"]
+      }
+    ]
   }
 }
