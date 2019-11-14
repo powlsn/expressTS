@@ -1,20 +1,13 @@
 import { Model } from 'objection';
 
 export class User extends Model {
-  // static get tableName(): string {
-  //   return 'user';
-  // }
+  
+  readonly id!: number;
+  name?: string;
+  firstname?: string;
+  lastname?: string;
+  
   static tableName = 'user';
-
-  // static get idColumn(): string {
-  //   return 'id';
-  // }
-
-  id!: number;
-
-  // fullName() {
-  //   return this.firstname + ' ' + this.lastname;
-  // }
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   static get jsonSchema() {

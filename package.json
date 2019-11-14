@@ -24,11 +24,6 @@
     "typescript": "^3.6.3"
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "@types/express": "^4.17.2",
-    "@types/method-override": "0.0.31",
-=======
->>>>>>> folder structure changed and tests integrated.
     "@typescript-eslint/eslint-plugin": "^2.3.1",
     "@typescript-eslint/parser": "^2.3.1",
     "eslint": "^6.4.0",

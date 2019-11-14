@@ -22,7 +22,7 @@ setDefaultTimeout(555 * seconds);
 
 // puppeteer
 const host = 'http://localhost';
-const port = '3000'; // dist/ compilation
+const port = '8000'; // dist/ compilation
 // const port = '8080'; // hot reload
 export const baseUrl = `${host}:${port}`;
 let browser: Browser;
@@ -36,8 +36,8 @@ export let page: Page;
 // So please use only the following All* hooks in this file.
 BeforeAll(async () => {
   const options = {
-    headless: false,
-    // slowMo: 300, // slow down by 300ms
+    headless: true, // maybe false
+    slowMo: 50, // slow down by 300ms
   };
   await Promise.all([
     dbCleaner.init(),

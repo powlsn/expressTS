@@ -13,3 +13,7 @@ Given('I am on the homepage', async () => {
 Given('I am at the list of {string}', async model => {
   await page.goto(baseUrl + '/' + model);
 });
+
+Given('I am at the {string} {string} page', async (model, param) => {
+  await page.goto(baseUrl + '/' + model + '/' + param);
+});

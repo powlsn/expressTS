@@ -1,5 +1,8 @@
-const environment = process.env.NODE_ENV || 'development';
+const environment = process.env.TEST || 'development';
+console.log("TCL: process.env.TEST", process.env.TEST)
+// console.log("TCL: environment", environment)
 const config = require('./knexfile.js')[environment];
+console.log("TCL: config", config)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const knex = require('knex')(config);
 import { Model } from 'objection';
@@ -10,6 +13,7 @@ import { urlencoded } from 'body-parser';
 import { userRouter } from './router/userRouter';
 
 Model.knex(knex);
+const PORT = environment === 'development' ? 3000 : 8000;
 const server = express();
 
 // server.disable('x-powered-by'); // hide Header entry for Express (Security Feature)
@@ -25,6 +29,6 @@ server.get('/', (req, res) => {
 server.use('/users', userRouter);
 server.set('view engine', 'pug');
 server.set('views', ['./views/', './views/users/']);
-server.listen(3000, () => {
-  console.log('Server started...');
+server.listen(PORT, () => {
+  console.log('Server started on PORT:', PORT);
 });

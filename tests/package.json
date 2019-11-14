@@ -5,7 +5,8 @@
   "main": "cucumber.js",
   "scripts": {
     "start": "npm run test",
-    "test": "node_modules/.bin/cucumber-js ./**/*.feature -p default"
+    "test": "node_modules/.bin/cucumber-js ./**/*.feature -p default",
+    "testHome": "node_modules/.bin/cucumber-js --tags @home ./**/*.feature -p default"
   },
   "author": "",
   "license": "ISC",

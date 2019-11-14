@@ -3,6 +3,7 @@ import { User } from '../models/User';
 import { transaction } from 'objection';
 
 export const getUsers: RequestHandler = async (request, response) => {
+
   const users = await User.query();
 
   return response.render('user-list', {

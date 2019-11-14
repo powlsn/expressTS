@@ -33,6 +33,7 @@ Then('I should see {string}', async text => {
 Then('I should not see {string}', async text => {
   await patiently(async () => {
     const content = await page.content();
+    // console.log("TCL: content", content) -> logt html content
     const matches = content.match(text);
     return expect(matches).to.be.null;
   });
