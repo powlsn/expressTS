@@ -3,7 +3,6 @@ import { Model } from 'objection';
 export class User extends Model {
   
   readonly id!: number;
-  name?: string;
   firstname?: string;
   lastname?: string;
   
@@ -13,10 +12,9 @@ export class User extends Model {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['name', 'firstname', 'lastname'],
+      required: ['firstname', 'lastname'],
       properties: {
         id: { type: 'integer' },
-        name: { type: 'string', minLength: 1, maxLength: 100 },
         firstname: { type: 'string', minLength: 1, maxLength: 100 },
         lastname: { type: 'string', minLength: 1, maxLength: 100 },
       },
