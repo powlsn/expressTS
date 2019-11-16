@@ -1,26 +1,33 @@
 import { Router } from 'express';
-import {
-  getUsers,
-  // getUserCreate,
-  // postUserCreate,
-  // getUserUpdate,
-  // patchUserUpdate,
-  // getUserDetail,
-  // deleteUser,
-} from '../controller/userController';
-
+import { server } from '../server';
 export const userRouter = Router();
 
-userRouter.get('/', getUsers);
+// const controller = server.get('controller');
 
-// userRouter.get('/add', getUserCreate);
+userRouter.get('/', (request, response) => {
+  server.get('ctrl').getUsers(request, response);
+});
 
-// userRouter.get('/:id', getUserDetail);
+userRouter.get('/add', (request, response) => {
+  server.get('ctrl').getCreateUser(request, response);
+});
 
-// userRouter.post('/', postUserCreate);
+userRouter.get('/:id', (request, response) => {
+  server.get('ctrl').getUserById(request, response);
+});
 
-// userRouter.get('/:id/edit', getUserUpdate);
+userRouter.post('/', (request, response) => {
+  server.get('ctrl').createUser(request, response);
+});
 
-// userRouter.patch('/:id/edit', patchUserUpdate);
+userRouter.get('/:id/edit', (request, response) => {
+  server.get('ctrl').getUserUpdate(request, response);
+});
 
-// userRouter.delete('/:id/delete', deleteUser);
+userRouter.patch('/:id/edit', (request, response) => {
+  server.get('ctrl').updateUser(request, response);
+});
+
+userRouter.delete('/:id/delete', (request, response) => {
+  server.get('ctrl').deleteUser(request, response);
+});

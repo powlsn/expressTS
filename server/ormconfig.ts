@@ -18,9 +18,9 @@ const common = {
   dropSchema: false,
   entities: ['./entity/*{.ts,.js}'],
   cli: {
-    entitiesDir: './entity',
-    migrationsDir: '/migrations',
-    subscribersDir: '/subscriber',
+    entitiesDir: './src/entity',
+    migrationsDir: 'src/migration',
+    subscribersDir: 'src/subscriber',
   },
 };
 
