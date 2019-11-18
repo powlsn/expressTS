@@ -1,20 +1,7 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-// const dotenv = require('dotenv');
-// const findUp = require('find-up');
-
-// const result = dotenv.config({
-//   path: findUp.sync(`env/${process.env.NODE_ENV}.env`),
-// });
-
-// if (result.error) throw result.error;
-
 const common = {
   type: 'postgres',
   host: '127.0.0.1',
   port: '5432',
-  username: 'postgres',
-  password: 'Awesome1',
-  database: 'ets_dev',
   dropSchema: false,
   entities: ['./entity/*{.ts,.js}'],
   cli: {
@@ -25,17 +12,20 @@ const common = {
 };
 
 module.exports = [
-  Object.assign(common, {
+  Object.assign({}, common, {
     name: 'development',
-    synchronize: true,
+    username: 'postgres',
+    password: 'Awesome1',
+    // synchronize: true,
     logging: true,
+    database: 'ets_dev',
   }),
-  Object.assign(
-    {
-      name: 'test',
-      synchronize: true,
-      logging: false,
-    },
-    common,
-  ),
+  Object.assign({}, common, {
+    name: 'test',
+    username: 'postgres',
+    password: 'Awesome1',
+    // synchronize: true,
+    logging: false,
+    database: 'ets_test',
+  }),
 ];

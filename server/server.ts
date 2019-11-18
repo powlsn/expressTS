@@ -4,7 +4,7 @@ import { Application } from 'express';
 import methodOverride from 'method-override';
 import { urlencoded } from 'body-parser';
 import { getConnection } from 'typeorm';
-import { dbConnection } from './utils/connection';
+import { dbConnection } from './utils/connectionOptions';
 import { userRouter } from './router/userRouter';
 import { User } from './entity/User';
 import { UserController } from './controller/UserController';
@@ -18,7 +18,7 @@ dbConnection
     server.use(methodOverride('_method'));
     const connectionName = connection.name;
     connection.runMigrations();
-    const userRepository = getConnection(connectionName).getRepository(User);
+    // const userRepository = getConnection(connectionName).getRepository(User);
     const entityManager = getConnection(connectionName).manager;
     const controller = new UserController(entityManager);
     
