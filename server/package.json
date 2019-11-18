@@ -7,12 +7,16 @@
     "prebuild": "rimraf build",
     "build": "tsc",
     "postbuild": "copyfiles ormconfig.js build",
+    "typeorm": "ts-node ../../typeorm/build/package/cli.js",
     "start:test": "cross-env NODE_ENV=test npm run start-server",
     "start:dev": "cross-env NODE_ENV=development npm run start-server",
     "start-server": "npm run build && node build/server.js",
     "start-ts": "ts-node server.ts",
     "start": "npm run start-ts",
-    "test": "cross-env TEST=test npm run start-server"
+    "test": "cross-env TEST=test npm run start-server",
+    "migrations:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -c test -n GetThisToWork",
+    "migrations:run": "ts-node ./node_modules/typeorm/cli.js migration:run -c",
+    "migrations:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -c"
   },
   "author": "Elmar Bruckmann",
   "license": "ISC",
