@@ -9,13 +9,13 @@
         "database": "ets_dev",
         "synchronize": true,
         "logging": true,
-        "entities": ["src/entity/**/*.ts"],
-        "migrations": ["src/migration/**/*.ts"],
-        "subscribers": ["src/subscriber/**/*.ts"],
+        "entities": ["entity/**/*entity.ts"],
+        "migrations": ["migration/**/*.ts"],
+        "subscribers": ["subscriber/**/*.ts"],
         "cli": {
-            "entitiesDir": "src/entity",
-            "migrationsDir": "src/migration",
-            "subscribersDir": "src/subscriber"
+            "entitiesDir": "entity",
+            "migrationsDir": "migration",
+            "subscribersDir": "subscriber"
         }
     },
     {
@@ -28,13 +28,13 @@
         "database": "ets_test",
         "synchronize": true,
         "logging": false,
-        "entities": ["src/entity/**/*.ts"],
-        "migrations": ["src/migration/**/*.ts"],
-        "subscribers": ["src/subscriber/**/*.ts"],
+        "entities": ["entity/**/*.entity.js"],
+        "migrations": ["migration/**/*.ts"],
+        "subscribers": ["subscriber/**/*.ts"],
         "cli": {
-            "entitiesDir": "src/entity",
-            "migrationsDir": "src/migration",
-            "subscribersDir": "src/subscriber"
+            "entitiesDir": "entity",
+            "migrationsDir": "migration",
+            "subscribersDir": "subscriber"
         }
     }
 ]

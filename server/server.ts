@@ -6,7 +6,7 @@ import { urlencoded } from 'body-parser';
 import { getConnection } from 'typeorm';
 import { dbConnection } from './utils/connectionOptions';
 import { userRouter } from './router/userRouter';
-import { User } from './entity/User';
+import { User } from './entity/User.entity';
 import { UserController } from './controller/UserController';
 
 const PORT = 3000;
@@ -27,6 +27,12 @@ dbConnection
     // server.disable('x-powered-by'); // hide Header entry for Express (Security Feature)
     server.use(urlencoded({ extended: true }));
     server.use('/static', express.static(path.resolve('./', 'public')));
+    server.get('/', (req, res) => {
+      res.render('home', {
+        title: 'User Board!',
+        message: 'Welcome here ...',
+      });
+    });
     server.use('/users', userRouter);
     server.set('view engine', 'pug');
     server.set('views', ['./views/', './views/users/']);

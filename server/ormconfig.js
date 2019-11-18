@@ -3,11 +3,12 @@ const common = {
   host: '127.0.0.1',
   port: '5432',
   dropSchema: false,
-  entities: ['./entity/*{.ts,.js}'],
+  entities: ['./**/*.entity.js', './**/*.entity.ts'],
+  migrations: ['migrations/**/*.ts'],
   cli: {
-    entitiesDir: './entity',
-    migrationsDir: '/migrations',
-    subscribersDir: '/subscriber',
+    entitiesDir: ['./**/*.entity.js', './**/*.entity.ts'],
+    migrationsDir: 'migrations/**/*.ts',
+    subscribersDir: 'subscriber',
   },
 };
 

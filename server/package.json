@@ -6,11 +6,12 @@
   "scripts": {
     "prebuild": "rimraf build",
     "build": "tsc",
-    "postbuild": "copyfiles knexfile.js build",
+    "postbuild": "copyfiles ormconfig.js build",
     "start:test": "cross-env NODE_ENV=test npm run start-server",
     "start:dev": "cross-env NODE_ENV=development npm run start-server",
     "start-server": "npm run build && node build/server.js",
-    "start": "nodemon -e ts -w ./ -x npm run start-server",
+    "start-ts": "ts-node server.ts",
+    "start": "npm run start-ts",
     "test": "cross-env TEST=test npm run start-server"
   },
   "author": "Elmar Bruckmann",

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { EntityManager } from 'typeorm';
-import { User } from '../entity/User';
+import { User } from '../entity/User.entity';
 import { IUser } from '../models/User';
 
 export class UserController {
@@ -34,12 +34,6 @@ export class UserController {
     }
 
     public async createUser(request: Request, response: Response): Promise<void> {
-        // if (request.method === 'POST') {
-        //     console.log("TCL: Request -> method", request.method);
-            
-        // } else {
-        //     console.log("TCL: Request -> method", request.method);
-        // }
         const user = this.getUserFromParams(request);
         const userCreated = await this.manager.save(user);
         if (userCreated) {
