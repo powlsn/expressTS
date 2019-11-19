@@ -7,7 +7,7 @@ const common = {
   migrations: ['build/migrations/*.js'],
   cli: {
     entitiesDir: ['./**/*.entity.js', './**/*.entity.ts'],
-    migrationsDir: 'build/migrations/*.js',
+    migrationsDir: 'migrations',
     subscribersDir: 'subscriber',
   },
 };
