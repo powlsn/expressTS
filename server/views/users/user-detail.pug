@@ -15,13 +15,22 @@ block content
           th(scope="col") #
           th(scope="col") Firstname
           th(scope="col") Lastname
+          th(scope="col" class="text-right") Actions
       tbody
         tr
           td(scope="row")= user.id
           td(scope="row")= user.firstname
           td(scope="row")= user.lastname
-    .clearfix
-      div(class="btn-group float-right" role="group" aria-label="edit field")
-        a(href=`/users/${user.id}/edit` class="btn btn-warning") Edit
-        form(method="POST" action=`/users/${user.id}/delete?_method=DELETE` class="btn-group")
-          button(type="Submit" class="btn btn-danger") Delete
+          td(scope="row")
+            .clearfix
+              div(class="btn-group float-right" role="group" aria-label="edit field")
+                a(href=`/users/${user.id}/edit` class="btn btn-warning") Edit
+                form(method="POST" action=`/users/${user.id}/delete?_method=DELETE` class="btn-group")
+                  button(type="Submit" class="btn btn-danger") Delete
+        tr
+          if user.photos.length > 0
+            each photo in user.photos
+              td(scope="row") photo.id
+              td(scope="row" colspan="3") photo.imageUrl
+          else
+            td(colspan="4" scope="row") No Photos

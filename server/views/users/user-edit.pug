@@ -5,11 +5,53 @@ block contentFluid
     h1.main-title #{title}
 
 block content
-  .col-md-4.offset-md-4.text-justify
-    form(action=`/users/${user.id}/edit?_method=PATCH` method="POST")
-      input(id="data-id" class="form-control" type="hidden" name="id" value=`${user.id}`)
-      label(for="firstname") Firstname
-      input(id="firstname" class="form-control" type="text" name="firstname" aria-description="firstnameHelp" value=`${user.firstname}`)
-      label(for="lastname") Lastname
-      input(id="lastname" class="form-control" type="text" name="lastname" aria-description="lastnameHelp" value=`${user.lastname}`)
-      button(class="btn btn-success mt-2" type="submit") Submit
+  form(action=`/users/${user.id}/edit?_method=PATCH` method="POST" class="container")
+    .form-row.justify-content-center
+      .form-group.col-md-4
+        input(id="data-id" class="form-control" type="hidden" name="id" value=`${user.id}`)
+
+    .form-row
+      .form-group.col-md-4.mx-auto
+        label(for="firstname") Firstname
+        input(id="firstname" class="form-control" type="text" name="firstname" aria-description="firstnameHelp" value=`${user.firstname}`)
+    
+    .form-row
+      .form-group.col-md-4.mx-auto
+        label(for="lastname") Lastname
+        input(id="lastname" class="form-control" type="text" name="lastname" aria-description="lastnameHelp" value=`${user.lastname}`)
+
+    .form-row
+      .form-group.col-md-4.mx-auto
+        hr
+        h5 Photo Section
+
+    if user.photos.length > 0
+      each photo in user.photos
+        .form-row
+          .input-group.col-md-4.mx-auto
+            label(for=`photo_${photo.id}`)= photo.id
+            input(id=`photo_${photo.id}` class="form-control" aria-description="photoHelp" name="photos" type="text" value=`${photo.imageUrl}`)
+
+    #photo-container
+      .form-row#photo-container
+        .input-group.col-md-4.mx-auto
+          input(id="photo" class="form-control mb-2" aria-description="photoHelp" name="photo" type="text" placeholder="http://add-your-photo-here.url")
+
+    .form-row
+      .form-group.col-md-4.offset-md-4
+        button(class="btn btn-success" type="submit") Submit
+      .col-md-4
+        button(class="btn btn-info" type="button") Add
+
+block footerScripts
+  script.
+    function addElement() {
+      let number = 0;
+      const container = document.getElementById('photo-container');
+      const item = container.cloneNode(true);
+      document.getElementById("photo-container").appendChild(item);
+      //- container.appendChild(input);
+      //- container.appendChild(document.createElement("br"));
+      number++;
+    }
+
