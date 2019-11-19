@@ -51,7 +51,10 @@ export class UserController {
         const id = parseInt(request.params.id, 10);
         const user = await this.manager.findOne(User, id);
         if (user) {
-            response.status(200).render('user-edit', { user });
+            response.status(200).render('user-edit', {
+                title: 'Edit User',
+                user: user 
+            });
         } else {
             response.redirect(400, '/users');
         }
