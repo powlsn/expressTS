@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { EntityManager, getManager } from 'typeorm';
 import { User } from '../entity/User.entity';
-import { IUser } from '../models/User';
+import { Photo } from '../entity/Photo.entity';
 
 export class UserController {
   constructor(readonly manager: EntityManager) {}
@@ -34,12 +34,16 @@ export class UserController {
   }
 
   public async createUser(request: Request, response: Response): Promise<void> {
-    const user = this.getUserFromParams(request);
-    const userCreated = await this.manager.save(user);
-    if (userCreated) {
+    const images = this.getPhotosFromParams(request);
+    console.log('TCL: UserController -> constructor -> images', images);
+    const userCreate = this.getUserFromParams(request);
+    const photos = await this.manager.save(images);
+    userCreate.photos = photos;
+    const user = await this.manager.save(userCreate);
+    if (user) {
       response.status(201).render('user-detail', {
         title: 'User Details',
-        user: userCreated,
+        user: user,
       });
     } else {
       response.redirect(400, '/users');
@@ -60,9 +64,12 @@ export class UserController {
   }
 
   public async updateUser(request: Request, response: Response): Promise<void> {
-    console.log(request.body);
+    const images = this.getPhotosFromParams(request);
+    const photos = await this.manager.save(images);
     const updatedUser = this.getUserFromParams(request);
+    updatedUser.photos = photos;
     const user = await this.manager.save(updatedUser);
+
     if (user) {
       response.status(204).redirect(`/users/${user.id}`);
     } else {
@@ -83,19 +90,28 @@ export class UserController {
       .getOne();
   }
 
+  private getPhotosFromParams(request: Request): Photo[] {
+    const items: string[] = request.body.photos;
+    if (request.body.photos.length > 0) {
+      return this.manager.create(
+        Photo,
+        items
+          .filter(e => e)
+          .map(item => {
+            return Object.assign(new Photo(), { imageUrl: item });
+          }),
+      );
+    } else {
+      return [];
+    }
+  }
+
   private getUserFromParams(request: Request): User {
-    let value: IUser = {
+    const value = {
+      id: request.params.id ? parseInt(request.params.id, 10) : null,
       firstname: request.body.firstname,
       lastname: request.body.lastname,
     };
-    console.log("TCL: UserController -> constructor -> request.body", request.body)
-    
-
-    if (request.params.id) {
-      value.id = parseInt(request.params.id, 10);
-    }
-
-    const user = Object.assign(new User(), value);
-    return user;
+    return this.manager.create(User, value);
   }
 }

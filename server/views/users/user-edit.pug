@@ -27,31 +27,12 @@ block content
 
     if user.photos.length > 0
       each photo in user.photos
-        .form-row
-          .input-group.col-md-4.mx-auto
-            label(for=`photo_${photo.id}`)= photo.id
-            input(id=`photo_${photo.id}` class="form-control" aria-description="photoHelp" name="photos" type="text" value=`${photo.imageUrl}`)
-
-    #photo-container
-      .form-row#photo-container
-        .input-group.col-md-4.mx-auto
-          input(id="photo" class="form-control mb-2" aria-description="photoHelp" name="photo" type="text" placeholder="http://add-your-photo-here.url")
-
+        +photoForm(photo.imageUrl)(id=`photo-${photo.id}`)
+      +photoForm
+    else
+      #photo-container
+        +photoForm
+        +photoForm
     .form-row
       .form-group.col-md-4.offset-md-4
         button(class="btn btn-success" type="submit") Submit
-      .col-md-4
-        button(class="btn btn-info" type="button") Add
-
-block footerScripts
-  script.
-    function addElement() {
-      let number = 0;
-      const container = document.getElementById('photo-container');
-      const item = container.cloneNode(true);
-      document.getElementById("photo-container").appendChild(item);
-      //- container.appendChild(input);
-      //- container.appendChild(document.createElement("br"));
-      number++;
-    }
-

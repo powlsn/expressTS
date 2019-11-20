@@ -1,0 +1,16 @@
+mixin photoForm(photo)
+  .form-row#photo-container
+    .input-group.col-md-4.mx-auto
+      input(
+        id!=attributes.id
+        class="form-control mb-2"
+        name="photos[]"
+        type="text"
+        placeholder="http://add-your-photo-here.url"
+        value=photo
+      )
+      div(class="btn-group" role="group" aria-label="edit field")
+        a(href=`/users/${user.id}/edit` class="btn btn-warning") Edit
+        form(method="POST" action=`/users/user.id/photo/photo.id/delete?_method=DELETE` class="btn-group")
+          button(type="submit" class="btn btn-danger") Delete
+        

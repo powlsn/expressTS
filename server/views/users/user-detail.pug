@@ -28,9 +28,14 @@ block content
                 form(method="POST" action=`/users/${user.id}/delete?_method=DELETE` class="btn-group")
                   button(type="Submit" class="btn btn-danger") Delete
         tr
-          if user.photos.length > 0
-            each photo in user.photos
-              td(scope="row") photo.id
-              td(scope="row" colspan="3") photo.imageUrl
+          td(scope="row" colspan="4")
+            h5 #{user.firstname} #{user.lastname} photos
+        
+        if user.photos.length > 0
+          each photo in user.photos
+            tr
+              td(scope="row") #{photo.id}
+              td(scope="row" colspan="3") #{photo.imageUrl}
           else
-            td(colspan="4" scope="row") No Photos
+            tr
+              td(colspan="4" scope="row") No Photos

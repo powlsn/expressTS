@@ -1,16 +1,19 @@
 import path from 'path';
 import express from 'express';
-import { Application } from 'express';
 import methodOverride from 'method-override';
 import { urlencoded } from 'body-parser';
-import { getConnection } from 'typeorm';
-import { dbConnection } from './utils/connectionOptions';
+import { getConnection, ConnectionOptions, createConnection, Connection } from 'typeorm';
 import { userRouter } from './router/userRouter';
-import { User } from './entity/User.entity';
 import { UserController } from './controller/UserController';
 
+const options = require("./ormconfig.js");
+
+const env = !process.env.NODE_ENV ? 'development' : process.env.NODE_ENV;
+const ormOptions: ConnectionOptions = env !== 'test' ? options[0] : options[1];
+const dbConnection: Promise<Connection> = createConnection(ormOptions);
 const PORT = 3000;
-export const server: Application = express(); 
+
+export const server: express.Application = express(); 
 
 dbConnection
   .then(connection => {
