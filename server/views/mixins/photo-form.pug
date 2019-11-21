@@ -1,5 +1,6 @@
 mixin photoForm(photo)
-  .form-row#photo-container
+  - var photoid = attributes.photoid
+  .form-row
     .input-group.col-md-4.mx-auto
       input(
         id!=attributes.id
@@ -9,8 +10,9 @@ mixin photoForm(photo)
         placeholder="http://add-your-photo-here.url"
         value=photo
       )
-      div(class="btn-group" role="group" aria-label="edit field")
-        a(href=`/users/${user.id}/edit` class="btn btn-warning") Edit
-        form(method="POST" action=`/users/user.id/photo/photo.id/delete?_method=DELETE` class="btn-group")
-          button(type="submit" class="btn btn-danger") Delete
-        
+      
+      .input-group-append
+        a(href=`/photos/${photoid}/edit` class="btn btn-warning mb-2")
+          i.fas.fa-pen
+        a(href=`/photos/${photoid}/delete?_method=DELETE` class="btn btn-danger mb-2")
+          i.fas.fa-times

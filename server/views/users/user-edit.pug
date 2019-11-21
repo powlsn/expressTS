@@ -5,6 +5,7 @@ block contentFluid
     h1.main-title #{title}
 
 block content
+  +backBtn({href: `/users`})
   form(action=`/users/${user.id}/edit?_method=PATCH` method="POST" class="container")
     .form-row.justify-content-center
       .form-group.col-md-4
@@ -27,12 +28,12 @@ block content
 
     if user.photos.length > 0
       each photo in user.photos
-        +photoForm(photo.imageUrl)(id=`photo-${photo.id}`)
-      +photoForm
+        +photoForm(photo.imageUrl)(photoid=`${photo.id}`)
+      +emptyPhotoForm
     else
-      #photo-container
-        +photoForm
-        +photoForm
+      +emptyPhotoForm
+      +emptyPhotoForm
+    
     .form-row
       .form-group.col-md-4.offset-md-4
         button(class="btn btn-success" type="submit") Submit

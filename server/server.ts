@@ -4,7 +4,9 @@ import methodOverride from 'method-override';
 import { urlencoded } from 'body-parser';
 import { getConnection, ConnectionOptions, createConnection, Connection } from 'typeorm';
 import { userRouter } from './router/userRouter';
+import { photoRouter } from './router/photoRouter';
 import { UserController } from './controller/UserController';
+import { PhotoController } from './controller/photoController';
 
 const options = require("./ormconfig.js");
 
@@ -20,14 +22,16 @@ dbConnection
     // setup typeORM
     server.use(methodOverride('_method'));
     const connectionName = connection.name;
-    connection.runMigrations();
+    // connection.runMigrations();
     // const userRepository = getConnection(connectionName).getRepository(User);
     const entityManager = getConnection(connectionName).manager;
-    const controller = new UserController(entityManager);
+    const userController = new UserController(entityManager);
+    const photoController = new PhotoController(entityManager);
     
-    server.set('ctrl', controller);
+    server.set('user_ctrl', userController);
+    server.set('photo_ctrl', photoController);
 
-    // server.disable('x-powered-by'); // hide Header entry for Express (Security Feature)
+    // server.disable('x-powered-by'); // hide Express header entry (Security Feature)
     server.use(urlencoded({ extended: true }));
     server.use('/static', express.static(path.resolve('./', 'public')));
     server.get('/', (req, res) => {
@@ -37,6 +41,7 @@ dbConnection
       });
     });
     server.use('/users', userRouter);
+    server.use('/photos', photoRouter);
     server.set('view engine', 'pug');
     server.set('views', ['./views/', './views/users/']);
     server.listen(PORT, () => {

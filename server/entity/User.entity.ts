@@ -12,6 +12,6 @@ export class User {
   @Column()
   lastname: string;
 
-  @OneToMany(type => Photo, photo => photo.user)
+  @OneToMany(type => Photo, photo => photo.user, { eager: true, cascade: true })
   photos: Photo[]
 }
