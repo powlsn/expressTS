@@ -1,82 +1,110 @@
-import { RequestHandler } from 'express';
-import { User } from '../models/User';
-import { transaction } from 'objection';
+import { Request, Response } from 'express';
+import { EntityManager, getManager } from 'typeorm';
+import { User } from '../entity/User.entity';
+import { Photo } from '../entity/Photo.entity';
+import { PhotoController } from './photoController';
 
-export const getUsers: RequestHandler = async (request, response) => {
+export class UserController {
+  constructor(readonly manager: EntityManager) {}
 
-  const users = await User.query();
+  public async getUsers(request: Request, response: Response): Promise<void> {
+    const user = await this.manager.find(User);
 
-  return response.render('user-list', {
-    title: 'Users List',
-    users: users,
-  });
-};
+    if(!user) {
+      response.redirect(400, '/users');
+    }
 
-export const getUserDetail: RequestHandler = async (request, response) => {
-  const user = await User.query().findById(request.params.id);
-
-  return response.render('user-detail', {
-    title: 'User Details',
-    user: user,
-  });
-};
-
-export const getUserCreate: RequestHandler = async (request, response) => {
-  return response.render('user-add', {
-    title: 'Add User',
-  });
-};
-
-export const postUserCreate: RequestHandler = async (request, response) => {
-  const user = await User.query().insert(request.body);
-
-  if (user) {
-    return response.status(201).redirect('/users');
-  } else {
-    return response.status(500).redirect('/users');
-  }
-};
-
-export const getUserUpdate: RequestHandler = async (request, response) => {
-  const user = await User.query().findById(request.params.id);
-  return response.render('user-edit', {
-    title: 'Edit User',
-    user: user,
-  });
-};
-
-export const patchUserUpdate: RequestHandler = async (request, response) => {
-  // this code comes from the official repo
-
-  const graph = request.body;
-
-  // Make sure only one User was sent.
-  if (Array.isArray(graph)) {
-    return response.status(400).redirect('/users');
+    response.status(200).render('user-list', {
+      title: 'Users List',
+      users: user,
+    });
   }
 
-  // Make sure the user has the correct id because `upsertGraph` uses the id fields
-  // to determine which models need to be updated and which inserted.
-  graph.id = parseInt(request.params.id, 10);
+  public async getUserById(request: Request, response: Response): Promise<void> {
+    const userRepo = this.manager.getRepository(User);
+    const user = await userRepo.findOne(request.params.id);
+    const photos = await user.photos;
+    
+    if (!user) {
+      response.redirect(400, 'user-detail');
+    }
 
-  // It's a good idea to wrap `upsertGraph` call in a transaction since it
-  // may create multiple queries.
-  const upsertedGraph = await transaction(User.knex(), trx => {
-    return (
-      User.query(trx)
-        // For security reasons, limit the relations that can be upserted.
-        .upsertGraph(graph)
+    response.status(200).render('user-detail', {
+      title: 'User Details',
+      user: user,
+      photos: photos
+    });
+  }
+
+  public getUserCreate(request: Request, response: Response): void {
+    response.status(200).render('user-add', {
+      title: 'User Add',
+    });
+  }
+
+  public async postUserCreate(request: Request, response: Response): Promise<void> {
+    const user = new User();
+    user.firstname = request.body.firstname;
+    user.lastname = request.body.lastname;
+    const photos = this.photosFromParams(request.body.photos);
+    user.photos = photos;
+    const erg = await this.manager.save(user);
+
+    if (!erg) {
+      response.redirect(400, '/users');
+    }
+
+    response.status(201).render('user-detail', {
+      title: 'User Details',
+      user: user,
+    });
+  }
+
+  public async getUserUpdate(request: Request, response: Response): Promise<void> {
+    const userRepo = this.manager.getRepository(User);
+    const user = await userRepo.findOne(request.params.id);
+    const photos = await user.photos;
+
+    if (!user) {
+      response.redirect(400, '/users');
+    }
+
+    response.status(200).render('user-edit', {
+      title: 'Edit User',
+      user: user,
+      photos: photos
+    });
+  }
+
+  public async patchUserUpdate(request: Request, response: Response): Promise<void> {
+    // const images = this.photosFromParams(request);
+    // // const photos = await this.manager.save(images);
+    // const updatedUser = this.userFromParams(request);
+    // // updatedUser.photos = Promise.resolve(images);
+    // const user = await this.manager.save(updatedUser);
+
+    // if (!user) {
+    //   response.redirect(400, '/users');
+    // }
+
+    response.status(204).redirect(`/users/1`);
+  }
+
+  public async deleteUser(request: Request, response: Response): Promise<void> {
+    const deleted = await this.manager.delete(User, request.params.id);
+    console.log("TCL: UserController -> constructor -> deleted", deleted)
+
+    response.status(203).redirect(301, '/users');
+  }
+
+  private photosFromParams(photos: string[]): Photo[] {
+    return this.manager.create(
+      Photo,
+      photos
+        .filter(e => e) // rejects empty strings
+        .map(item =>  Object.assign(new Photo(), {
+          imageUrl: item 
+        })),
     );
-  });
-  return response.status(204).redirect('/users');
-};
-
-export const deleteUser: RequestHandler = async (request, response) => {
-  const user = await User.query().deleteById(request.params.id);
-
-  if (!user) {
-    return response.status(500).redirect(`/users`);
-  } else {
-    return response.status(200).redirect('/users');
   }
-};
+}

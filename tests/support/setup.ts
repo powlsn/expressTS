@@ -22,7 +22,7 @@ setDefaultTimeout(555 * seconds);
 
 // puppeteer
 const host = 'http://localhost';
-const port = '8000'; // dist/ compilation
+const port = '3000'; // dist/ compilation
 // const port = '8080'; // hot reload
 export const baseUrl = `${host}:${port}`;
 let browser: Browser;
@@ -36,7 +36,7 @@ export let page: Page;
 // So please use only the following All* hooks in this file.
 BeforeAll(async () => {
   const options = {
-    headless: true, // maybe false
+    headless: false, // maybe false
     slowMo: 50, // slow down by 300ms
   };
   await Promise.all([

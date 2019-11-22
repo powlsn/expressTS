@@ -5,12 +5,20 @@ block contentFluid
     h1.main-title #{title}
 
 block content
-  .col-md-4.offset-md-4.text-justify
-    form(action="/users" method="post")
-      label(for="name") Nickname
-      input(id="name" class="form-control" type="text" name="name" aria-description="nameHelp" placeholder="Enter Nickname")
-      label(for="firstname") Firstname
-      input(id="firstname" class="form-control" type="text" name="firstname" aria-description="firstnameHelp" placeholder="Enter Firstname")
-      label(for="lastname") Lastname
-      input(id="lastname" class="form-control" type="text" name="lastname" aria-description="lastnameHelp" placeholder="Enter Lastname")
-      button(class="btn btn-success mt-2" type="submit") Submit
+  +backBtn({href: `/users`})
+  form(action="/users" method="post" class="container")
+    .form-row.justify-content-center
+      .form-froup.col-md-4.mb-2
+        label(for="firstname") Firstname
+        input(id="firstname" class="form-control" type="text" name="firstname" aria-description="firstnameHelp" placeholder="Enter Firstname")
+        label(for="lastname") Lastname
+        input(id="lastname" class="form-control" type="text" name="lastname" aria-description="lastnameHelp" placeholder="Enter Lastname")
+    .form-row
+      .form-group.col-md-4.mx-auto
+        hr
+        h5 Photo Section
+    +emptyPhotoForm
+    +emptyPhotoForm
+    .form-row
+      .form-group.col-md-4.offset-md-4
+        button(class="btn btn-success mt-2" type="submit") Submit

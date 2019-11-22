@@ -7,14 +7,14 @@ block contentFluid
 block content
   .col-md.text-justify
     div.btn-group
-      a.btn.btn-primary.mb-2(href="/users/add") Add User
+      a.btn.btn-primary.mb-2(href="/users/add")
+        i(class="fas fa-plus" title="Add User")
   .col-md.text-justify
     if users.length !== 0
       table.table
         thead
           tr
             th(scope="col") #
-            th(scope="col") Nickname
             th(scope="col") Firstname
             th(scope="col") Lastname
             th(scope="col") Actions
@@ -22,7 +22,6 @@ block content
           each user in users
             tr.user-row
               td(scope="row")= user.id
-              td(scope="row")= user.name
               td(scope="row")= user.firstname
               td(scope="row")= user.lastname
               td(scope="row")
