@@ -30,8 +30,8 @@ block content
           td(scope="row" colspan="4")
             h5 #{user.firstname} #{user.lastname} photos
         
-        if user.photos.length > 0
-          each photo in user.photos
+        if photos.length > 0
+          each photo in photos
             tr
               td(scope="row") #{photo.id}
               td(scope="row" colspan="3") #{photo.imageUrl}

@@ -9,6 +9,6 @@ export class Photo {
     @Column()
     imageUrl: string;
 
-    @ManyToOne(type => User, user => user.photos, {nullable: false, onDelete: 'CASCADE'})
-    user: User;
+    @ManyToOne(type => User, user => user.photos, {nullable: false, onDelete: 'CASCADE', lazy: true })
+    user: Promise<User>;
 }

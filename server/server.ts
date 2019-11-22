@@ -43,7 +43,7 @@ dbConnection
     server.use('/users', userRouter);
     server.use('/photos', photoRouter);
     server.set('view engine', 'pug');
-    server.set('views', ['./views/', './views/users/']);
+    server.set('views', ['./views/', './views/users/', './views/photos/']);
     server.listen(PORT, () => {
       console.log('Server started on PORT:', PORT);
     });

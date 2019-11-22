@@ -11,7 +11,7 @@
     "start:test": "cross-env NODE_ENV=test npm run start-ts",
     "start:dev": "cross-env NODE_ENV=development npm run start-ts",
     "start-build": "npm run build && node build/server.js",
-    "start-ts": "ts-node server.ts",
+    "start-ts": "nodemon -e ts -w ./ -x ts-node server.ts",
     "start": "npm run start-ts",
     "test": "cross-env TEST=test npm run start-server",
     "migrations:generate": "ts-node ../../typeorm/build/package/cli.js migration:generate -c test -n",

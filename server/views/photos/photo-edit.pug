@@ -2,10 +2,10 @@ extends ../layout
 
 block content
   +backBtn({href: `/users/${user.id}`})
+
   form(action=`/photos/${photo.id}/edit?_method=PATCH` method="POST" class="container")
-    .form-row.justify-content-center
-      .form-group.col-md-4
-        input(id="data-id" class="form-control" type="hidden" name="id" value=`${photo.id}`)
+    input(id="data-id" class="form-control" type="hidden" name="userid" value=`${user.id}`)
+    input(id="data-id" class="form-control" type="hidden" name="photoid" value=`${photo.id}`)
 
     .form-row
       .form-group.col-md-4.mx-auto

@@ -7,9 +7,7 @@ block contentFluid
 block content
   +backBtn({href: `/users`})
   form(action=`/users/${user.id}/edit?_method=PATCH` method="POST" class="container")
-    .form-row.justify-content-center
-      .form-group.col-md-4
-        input(id="data-id" class="form-control" type="hidden" name="id" value=`${user.id}`)
+    input(id="data-id" class="form-control" type="hidden" name="id" value=`${user.id}`)
 
     .form-row
       .form-group.col-md-4.mx-auto
@@ -26,8 +24,8 @@ block content
         hr
         h5 Photo Section
 
-    if user.photos.length > 0
-      each photo in user.photos
+    if photos.length > 0
+      each photo in photos
         +photoForm(photo.imageUrl)(photoid=`${photo.id}`)
       +emptyPhotoForm
     else

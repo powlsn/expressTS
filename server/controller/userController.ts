@@ -21,7 +21,9 @@ export class UserController {
   }
 
   public async getUserById(request: Request, response: Response): Promise<void> {
-    const user = await this.manager.findOne(User, request.params.id);
+    const userRepo = this.manager.getRepository(User);
+    const user = await userRepo.findOne(request.params.id);
+    const photos = await user.photos;
     
     if (!user) {
       response.redirect(400, 'user-detail');
@@ -30,6 +32,7 @@ export class UserController {
     response.status(200).render('user-detail', {
       title: 'User Details',
       user: user,
+      photos: photos
     });
   }
 
@@ -60,6 +63,7 @@ export class UserController {
   public async getUserUpdate(request: Request, response: Response): Promise<void> {
     const userRepo = this.manager.getRepository(User);
     const user = await userRepo.findOne(request.params.id);
+    const photos = await user.photos;
 
     if (!user) {
       response.redirect(400, '/users');
@@ -68,6 +72,7 @@ export class UserController {
     response.status(200).render('user-edit', {
       title: 'Edit User',
       user: user,
+      photos: photos
     });
   }
 
