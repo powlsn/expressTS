@@ -1,4 +1,5 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
+import { Photo } from './Photo.entity';
 
 @Entity()
 export class User {
@@ -10,4 +11,7 @@ export class User {
 
   @Column()
   lastname: string;
+
+  @OneToMany(type => Photo, photo => photo.user, { eager: true, cascade: true, lazy: true })
+  photos: Photo[]
 }
