@@ -1,20 +1,13 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6", "dom"],
-    "target": "es6",
     "module": "commonjs",
+    "declaration": true,
+    "target": "es6",
     "outDir": "./build",
     "sourceMap": true,
+    "incremental": true,
     "baseUrl": "./",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "types": [
-      "node"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
-    ]
   }
 }
