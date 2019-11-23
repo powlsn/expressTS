@@ -14,18 +14,19 @@ block content
           th(scope="col") #
           th(scope="col") Firstname
           th(scope="col") Lastname
-          th(scope="col" class="text-right") Actions
+          th(scope="col" class="text-center") Actions
       tbody
         tr
           td(scope="row")= user.id
           td(scope="row")= user.firstname
           td(scope="row")= user.lastname
-          td(scope="row")
-            .clearfix
-              div(class="btn-group float-right" role="group" aria-label="edit field")
-                a(href=`/users/${user.id}/edit` class="btn btn-warning") Edit
-                form(method="POST" action=`/users/${user.id}/delete?_method=DELETE` class="btn-group")
-                  button(type="Submit" class="btn btn-danger") Delete
+          td(scope="row" class="text-center")
+            div(class="btn-group" role="group" aria-label="edit field")
+              a(href=`/users/${user.id}/edit` class="btn btn-warning")
+                i.fas.fa-pen
+              form(method="POST" action=`/users/${user.id}/delete?_method=DELETE` class="btn-group")
+                button(type="Submit" class="btn btn-danger")
+                  i.fas.fa-times
         tr
           td(scope="row" colspan="4")
             h5 #{user.firstname} #{user.lastname} photos

@@ -17,19 +17,21 @@ block content
             th(scope="col") #
             th(scope="col") Firstname
             th(scope="col") Lastname
-            th(scope="col") Actions
+            th(scope="col" class="text-center") Actions
         tbody
           each user in users
             tr.user-row
               td(scope="row")= user.id
               td(scope="row")= user.firstname
               td(scope="row")= user.lastname
-              td(scope="row")
+              td(scope="row" class="text-center")
                 div(class="btn-group" role="group" aria-label="edit field")
                   a(href=`/users/${user.id}` class="btn btn-success" role="button") Details
-                  a(href=`/users/${user.id}/edit` class="btn btn-warning") Edit
+                  a(href=`/users/${user.id}/edit` class="btn btn-warning")
+                    i.fas.fa-pen
                   form(method="POST" action=`/users/${user.id}/delete?_method=DELETE` class="btn-group")
-                    button(type="submit" class="btn btn-danger") Delete
+                    button(type="submit" class="btn btn-danger")
+                      i.fas.fa-times
     else
       p No users available yet
                 //- a(href=`/users/${user.id}/delete?_method=DELETE` class="btn btn-danger") Delete

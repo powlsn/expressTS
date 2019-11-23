@@ -1,6 +1,0 @@
-extends ../layout
-
-block content
-  - var button = { class: 'btn-success', value: 'Save'}
-  +buttonMixin({href: `/users/${user.id}`})
-  +formMixin({user, photo, button})(action=`/photos/${photo.id}/edit?_method=PATCH`)

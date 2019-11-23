@@ -1,6 +1,19 @@
 extends ../layout
 
+block contentFluid
+  .col-md-4.offset-md-1
+    h1.main-title #{title}
+
 block content
-  - var button = { class: 'btn-danger', value: 'Delete'}
-  +buttonMixin({href: `/users/${user.id}`})
-  +formMixin({user, photo, button})(action=`/photos/delete/${photo.id}?_method=DELETE`)
+  form(action=`/photos/delete/${photo.id}?_method=DELETE` method="POST" class="container")
+    input(id="data-id" class="form-control" type="hidden" name="userid" value=`${user.id}`)
+
+    .form-row
+      .form-group.col-md-4.mx-auto
+        p Are you sure to delete #{photo.imageUrl} ?
+
+    .form-row
+      .form-group.col-md-4.offset-md-4
+        a.btn.btn-secondary.mr-2(href=`/users/${user.id}`)
+          i.fas.fa-long-arrow-alt-left
+        button(class="btn btn-danger" type="submit") Delete
