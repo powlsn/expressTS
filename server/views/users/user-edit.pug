@@ -5,7 +5,7 @@ block contentFluid
     h1.main-title #{title}
 
 block content
-  +backBtn({href: `/users`})
+  +buttonMixin({href: `/users`})
   form(action=`/users/${user.id}/edit?_method=PATCH` method="POST" class="container")
     input(id="data-id" class="form-control" type="hidden" name="id" value=`${user.id}`)
 
@@ -26,11 +26,11 @@ block content
 
     if photos.length > 0
       each photo in photos
-        +photoForm(photo.imageUrl)(photoid=`${photo.id}`)
-      +emptyPhotoForm
+        +inputMixin(photo.imageUrl)(photoid=`${photo.id}`)
+      +inputEmptyMixin
     else
-      +emptyPhotoForm
-      +emptyPhotoForm
+      +inputEmptyMixin
+      +inputEmptyMixin
     
     .form-row
       .form-group.col-md-4.offset-md-4

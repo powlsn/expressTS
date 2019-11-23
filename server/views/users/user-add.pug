@@ -5,7 +5,7 @@ block contentFluid
     h1.main-title #{title}
 
 block content
-  +backBtn({href: `/users`})
+  +buttonMixin({href: `/users`})
   form(action="/users" method="post" class="container")
     .form-row.justify-content-center
       .form-froup.col-md-4.mb-2
@@ -17,8 +17,8 @@ block content
       .form-group.col-md-4.mx-auto
         hr
         h5 Photo Section
-    +emptyPhotoForm
-    +emptyPhotoForm
+    +inputEmptyMixin
+    +inputEmptyMixin
     .form-row
       .form-group.col-md-4.offset-md-4
         button(class="btn btn-success mt-2" type="submit") Submit

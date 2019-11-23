@@ -1,4 +1,4 @@
-mixin photoForm(photo)
+mixin inputMixin(photo)
   - var photoid = attributes.photoid
   .form-row
     .input-group.col-md-4.mx-auto
@@ -14,5 +14,5 @@ mixin photoForm(photo)
       .input-group-append
         a(href=`/photos/${photoid}/edit` class="btn btn-warning mb-2")
           i.fas.fa-pen
-        a(href=`/photos/${photoid}/delete?_method=DELETE` class="btn btn-danger mb-2")
+        a(href=`/photos/delete/${photoid}` class="btn btn-danger mb-2")
           i.fas.fa-times

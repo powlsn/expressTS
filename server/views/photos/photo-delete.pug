@@ -1,0 +1,6 @@
+extends ../layout
+
+block content
+  - var button = { class: 'btn-danger', value: 'Delete'}
+  +buttonMixin({href: `/users/${user.id}`})
+  +formMixin({user, photo, button})(action=`/photos/delete/${photo.id}?_method=DELETE`)

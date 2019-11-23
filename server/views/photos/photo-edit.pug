@@ -1,17 +1,6 @@
 extends ../layout
 
 block content
-  +backBtn({href: `/users/${user.id}`})
-
-  form(action=`/photos/${photo.id}/edit?_method=PATCH` method="POST" class="container")
-    input(id="data-id" class="form-control" type="hidden" name="userid" value=`${user.id}`)
-    input(id="data-id" class="form-control" type="hidden" name="photoid" value=`${photo.id}`)
-
-    .form-row
-      .form-group.col-md-4.mx-auto
-        label(for="firstname") Url
-        input(id="firstname" class="form-control" type="text" name="imageUrl" aria-description="imageurlHelp" value=`${photo.imageUrl}`)
-
-    .form-row
-      .form-group.col-md-4.offset-md-4
-        button(class="btn btn-success" type="submit") Save
+  - var button = { class: 'btn-success', value: 'Save'}
+  +buttonMixin({href: `/users/${user.id}`})
+  +formMixin({user, photo, button})(action=`/photos/${photo.id}/edit?_method=PATCH`)
