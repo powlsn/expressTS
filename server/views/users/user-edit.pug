@@ -24,8 +24,8 @@ block content
         hr
         h5 Photo Section
 
-    if photos.length > 0
-      each photo in photos
+    if user.photos.length > 0
+      each photo in user.photos
         +inputMixin(photo.imageUrl)(photoid=`${photo.id}`)
       +inputEmptyMixin
     else

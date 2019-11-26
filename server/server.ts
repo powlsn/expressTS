@@ -12,6 +12,7 @@ import { userRouter } from './router/userRouter';
 import { photoRouter } from './router/photoRouter';
 import { UserController } from './controller/UserController';
 import { PhotoController } from './controller/photoController';
+import { AppService } from './app-service';
 
 const options = require('./ormconfig.js');
 
@@ -27,7 +28,8 @@ dbConnection
     // setup typeORM
     const connectionName = connection.name;
     const entityManager = getConnection(connectionName).manager;
-    const userController = new UserController(entityManager);
+    const appService = new AppService(entityManager);
+    const userController = new UserController(appService);
     const photoController = new PhotoController(entityManager);
 
     server.use(methodOverride('_method'));

@@ -15,7 +15,7 @@ export class User {
   @OneToMany(
     type => Photo,
     photo => photo.user,
-    { cascade: true, lazy: true },
+    { cascade: true },
   )
   photos: Photo[];
 }

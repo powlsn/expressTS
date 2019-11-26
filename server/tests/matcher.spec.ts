@@ -58,7 +58,7 @@ test('no I in Team', () => {
   expect('team').not.toMatch(/I/);
 });
 
-test('ther is erbe in Sterben', () => {
+test('there is erbe in Sterben', () => {
   expect('Sterben').toMatch(/erbe/);
 });
 

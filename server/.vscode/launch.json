@@ -15,6 +15,28 @@
             "outFiles": [
                 "${workspaceFolder:server}/build/**/*.js",
             ]
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Current Integ. Test",
+            "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            "args": [
+              "${fileBasenameNoExtension}",
+              "--runInBand"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "env": {
+              "NODE_ENV": "test"
+            },
+            "smartStep": true,
+            "skipFiles": [
+              "<node_internals>/**/*.js",
+              "node_modules/tslib/*",
+              "node_modules/rxjs/*",
+              "node_modules/**/*"
+            ]
+          }
     ]
 }
