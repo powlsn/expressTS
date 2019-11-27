@@ -1,10 +1,8 @@
 import { Client } from 'pg';
-import '../../../shared/src/extensions/array';
-import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 export class PgCleaner {
   public readonly defaultSchema: string = 'public';
-  public readonly defaultTestDatabaseName: string = 'pvs-test';
+  public readonly defaultTestDatabaseName: string = 'exTest';
   public readonly testsSuiteConnection = 'test'; // I want this hardcoded
 
   private readonly client: Client;
@@ -33,8 +31,12 @@ export class PgCleaner {
 
   async run(): Promise<string[]> {
     const ormSystemTables = ['migrations']; // TypeORM system tables
+    console.log("TCL: PgCleaner -> ormSystemTables", ormSystemTables)
     const allTables = await this.allTables();
-    const tablesToTruncate = allTables.without(ormSystemTables);
+    // const tablesToTruncate = allTables.without(ormSystemTables);
+    const tablesToTruncate = allTables.filter(
+        x => !ormSystemTables.includes(x),
+      );
     const queries = tablesToTruncate.map(
       table => `DELETE FROM ${this.defaultSchema}."${table}";`,
     );

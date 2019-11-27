@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { AppService } from '../app-service';
 import { User } from '../entity/User.entity';
-
+import { Photo } from '../entity/Photo.entity';
+import { userParser } from '../middleware/userParser';
+import { photosArrayParser } from '../middleware/photoArrayParser';
 
 export class UserController {
   constructor(readonly service: AppService) {}
@@ -20,9 +22,8 @@ export class UserController {
   }
 
   public async getUserById(request: Request, response: Response): Promise<void> {
-    const id: number = parseInt(request.params.id);
-    const user: User = await this.service.getUser(id);
-    
+    const user: User = await this.service.getUser(parseInt(request.params.id));
+
     if (!user) {
       response.redirect(400, 'user-detail');
     }
@@ -40,7 +41,10 @@ export class UserController {
   }
 
   public async postUserCreate(request: Request, response: Response): Promise<void> {
-    const user: User = await this.service.createUser(request.body);
+    const tempUser: User = userParser(request);
+    const user: User = await this.service.createUser(tempUser);
+    const tempPhotos: Photo[] = photosArrayParser(request.body.photo, user.id);
+    await this.service.createPhotos(user, tempPhotos);
 
     if (!user) {
       response.redirect(400, '/users');
@@ -53,8 +57,7 @@ export class UserController {
   }
 
   public async getUserUpdate(request: Request, response: Response): Promise<void> {
-    const id = parseInt(request.params.id);
-    const user: User = await this.service.getUser(id);
+    const user: User = await this.service.getUser(parseInt(request.params.id));
 
     if (!user) {
       response.redirect(400, '/users');
@@ -67,13 +70,18 @@ export class UserController {
   }
 
   public async patchUserUpdate(request: Request, response: Response): Promise<void> {
-    const user: User = await this.service.updateUser(request.body);
+    // prepare the objects
+    const user: User = userParser(request);
+    const photo: Photo[] = photosArrayParser(request.body.photo, parseInt(request.params.id));
 
-    if (!user) {
+    // here starts the code its actual task
+    const u: User = await this.service.updateUser(user, photo);
+
+    if (!u) {
       response.redirect(400, '/users');
     }
 
-    response.status(204).redirect(`/users/${user.id}`);
+    response.status(204).redirect(`/users/${u.id}`);
   }
 
   public async deleteUser(request: Request, response: Response): Promise<void> {

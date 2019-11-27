@@ -5,11 +5,14 @@ import {
   Connection,
 } from 'typeorm';
 import { AppService } from '../app-service';
+import './database/pg-cleaner-hooks';
+import { UserFactory } from './fixture/user-factory';
 
 describe('User Entity Tests', () => {
   
   let appService: AppService;
   let connection: Connection;
+  let userFactory: UserFactory;
   let user: User;
   
   beforeAll(async () => {
@@ -26,49 +29,52 @@ describe('User Entity Tests', () => {
   
     const entityManager = getConnection('default').manager;
     appService = new AppService(entityManager);
+    userFactory = new UserFactory(appService);
     user = new User();
   });
 
   afterAll(async () => {
     await connection.close();
-  })
+  });
 
   // beforeEach() : dataBase cleaner!
 
   it('create User', async () => {
     // here i should create a user and fetch from the db to test if it exists
-    const data = {firstname: 'firstname', lastname: 'lastname', photos: []};
-    const cUser = await appService.createUser(data);
+    const user1 = await userFactory.create({photos: []});
 
-    expect(cUser.id).toBeDefined();
-    expect(cUser.id).not.toBeUndefined();
-    expect(cUser.id).not.toBeNull();
-    expect(cUser).toMatchObject(user);
-    expect(cUser.firstname).toContain(data.firstname);
-    expect(cUser.lastname).toContain(data.lastname);
+    expect(user1.id).not.toBeUndefined();
+    expect(user1.id).not.toBeNull();
+    expect(user1).toMatchObject(user);
+    expect(user1.firstname).not.toBeUndefined();
+    expect(user1.firstname).not.toBeNull();
+    expect(user1.lastname).not.toBeUndefined();
+    expect(user1.lastname).not.toBeNull();
   });
 
   it('update User', async () => {
-    // fetch a given user from db, update it's values, save it and fetch it agein to test if
-    // 1. get a user // 
-    this.user = await appService.getUser(10);
-    // const u = us.shift();
-    const data = { id:this.user.id, firstname: 'NewName', lastname: 'NewLastName', photos: [] };
-    const userUpdated = await appService.updateUser(data);
-    // 2. user has the updated values
-    expect(userUpdated).toBeDefined();
-    expect(userUpdated).toMatchObject(user);
-    expect(userUpdated.id).toBe(data.id);
-    expect(userUpdated.firstname).toContain(data.firstname);
-    expect(userUpdated.lastname).toContain(data.lastname);
+    // 1. create a user
+    let user1 = await userFactory.create({photos: []});
+    // 2. update user props
+    const obj = { id: user1.id, firstname: 'NewName', lastname: 'NewLastName', photos: [] };
+    user1 = await appService.updateUser(obj);
+    // 3. check user updated values
+    expect(user1).toBeDefined();
+    expect(user1).toMatchObject(user);
+    expect(user1.id).toBe(obj.id);
+    expect(user1.firstname).not.toBeUndefined();
+    expect(user1.firstname).not.toBeNull();
+    expect(user1.lastname).not.toBeUndefined();
+    expect(user1.lastname).not.toBeNull();
   });
 
-  it('delete User', () => {
-    // setup a user in db
-    // fetch it
-    // delete it
+  it('delete User', async () => {
+    // 1. create user
+    let user1 = await userFactory.create({photos: []});
+    // 2. delete user
+    user1 = await appService.deleteUser(user1.id);
     // check if the deleted user has an id (should be undefined)
-    // check if the data correspond to given values
-    // check if db is empty (expected behavior)
+    expect(user1.id).toBeUndefined();
+    expect(user1.id).toBeFalsy();
   });
 });

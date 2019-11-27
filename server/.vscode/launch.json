@@ -8,19 +8,26 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Server",
+            "program": "${workspaceFolder}/server.ts",
+            "preLaunchTask": "npm: build",
+            "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+            "outFiles": ["${workspaceFolder}/build/**/*.js"],
+            "cwd": "${workspaceFolder}",
             "skipFiles": [
-                "<node_internals>/**"
+              "<node_internals>/**/*.js",
+              "node_modules/tslib/*",
+              "node_modules/rxjs/*",
+              "node_modules/**/*"
             ],
-            "program": "${workspaceFolder:server}\\server.ts",
-            "outFiles": [
-                "${workspaceFolder:server}/build/**/*.js",
-            ]
+            "env": {
+              "NODE_ENV": "developments"
+            }
         },
         {
             "type": "node",
             "request": "launch",
             "name": "Current Integ. Test",
-            "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            "program": "${workspaceFolder}/node_modules/jest/bin/jest",            
             "args": [
               "${fileBasenameNoExtension}",
               "--runInBand"

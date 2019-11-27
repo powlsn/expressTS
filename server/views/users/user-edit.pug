@@ -26,7 +26,11 @@ block content
 
     if user.photos.length > 0
       each photo in user.photos
-        +inputMixin(photo.imageUrl)(photoid=`${photo.id}`)
+        +inputMixin({
+          photoid:`${photo.id}`,
+          imageUrl:`${photo.imageUrl}`,
+          userid:`${user.id}`
+        })
       +inputEmptyMixin
     else
       +inputEmptyMixin

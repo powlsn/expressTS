@@ -7,11 +7,10 @@ export class PhotoController {
 
   public async getDeletePhoto(request: Request, response: Response): Promise<void> {
     const photoRepo = this.manager.getRepository(Photo);
-    const photo = await photoRepo.findOne(request.params.id);
-    const user = await photo.user;
+    const photo = await photoRepo.findOne(request.params.id, { relations: ['user'] });
+    console.log("TCL: PhotoController -> constructor -> photo", photo)
     response.status(200).render('photo-delete', {
       title: 'Delete Photo',
-      user: user,
       photo: photo,
     });
   }

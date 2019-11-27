@@ -1,16 +1,19 @@
-mixin inputMixin(photo)
-  - var photoid = attributes.photoid
+mixin inputMixin(obj)
   .form-row
     .input-group.col-md-4.mx-auto
       input(
-        id!=attributes.id
+        type="hidden"
+        name=`photo[${obj.photoid}]`
+        value=`${obj.photoid}`
+      )
+      input(
+        id=`${obj.photoid}`
         class="form-control mb-2"
-        name="photos[]"
+        name=`photo[${obj.photoid}]`
         type="text"
         placeholder="http://add-your-photo-here.url"
-        value=photo
+        value=`${obj.imageUrl}`
       )
-      
       .input-group-append
-        a(href=`/photos/delete/${photoid}` class="btn btn-danger mb-2")
+        a(href=`/photos/delete/${obj.photoid}` class="btn btn-danger mb-2")
           i.fas.fa-times
