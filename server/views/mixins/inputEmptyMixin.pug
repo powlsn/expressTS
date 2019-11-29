@@ -2,9 +2,19 @@ mixin inputEmptyMixin
   .form-row
     .input-group.col-md-4.mx-auto
       input(
+        type="hidden"
+        name=`photo[0]`
+        value=""
+      )
+      input(
         class="form-control mb-2"
-        name="photo[]"
+        name="photo[0]"
         type="text"
         placeholder="http://add-your-photo-here.url"
+      )
+      input(
+        type="hidden"
+        name=`photo[0]`
+        value=""
       )
         

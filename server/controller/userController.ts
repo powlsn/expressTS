@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
-import { AppService } from '../app-service';
+import { UserService } from '../user-service';
 import { User } from '../entity/User.entity';
 import { Photo } from '../entity/Photo.entity';
-import { userParser } from '../middleware/userParser';
-import { photosArrayParser } from '../middleware/photoArrayParser';
+import { requestUserMapper } from '../middleware/requestUserMapper';
+import { photosArrayParser, photoArray } from '../middleware/photoArrayParser';
 
 export class UserController {
-  constructor(readonly service: AppService) {}
+  constructor(readonly service: UserService) {}
 
   public async getUsers(request: Request, response: Response): Promise<void> {
-    const user = await this.service.getAllUser();
+    const user = await this.service.getAllUsers();
 
     if (!user) {
       response.redirect(400, '/users');
@@ -41,10 +41,12 @@ export class UserController {
   }
 
   public async postUserCreate(request: Request, response: Response): Promise<void> {
-    const tempUser: User = userParser(request);
-    const user: User = await this.service.createUser(tempUser);
-    const tempPhotos: Photo[] = photosArrayParser(request.body.photo, user.id);
-    await this.service.createPhotos(user, tempPhotos);
+    const tmpUser: User = requestUserMapper(request);
+    let user: User = await this.service.createUser(tmpUser);
+    // const test = photoArray(request.body.photo, user.id);
+    // const tmpPhotos: Photo[] = photosArrayParser(request.body.photo, user.id);
+    // await this.service.createPhotos(user, tmpPhotos);
+    user = await this.service.getUser(user.id);
 
     if (!user) {
       response.redirect(400, '/users');
@@ -71,11 +73,14 @@ export class UserController {
 
   public async patchUserUpdate(request: Request, response: Response): Promise<void> {
     // prepare the objects
-    const user: User = userParser(request);
-    const photo: Photo[] = photosArrayParser(request.body.photo, parseInt(request.params.id));
+    const user: User = requestUserMapper(request);
+    // const photo: Photo[] = photosArrayParser(request.body.photo, parseInt(request.params.id));
+    photoArray(request.body.photo, parseInt(request.params.id));
+    // console.log("TCL: UserController -> constructor -> photo", photo)
+
 
     // here starts the code its actual task
-    const u: User = await this.service.updateUser(user, photo);
+    const u: User = await this.service.updateUser(user);
 
     if (!u) {
       response.redirect(400, '/users');

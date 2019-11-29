@@ -1,17 +1,20 @@
 import { User } from '../entity/User.entity';
 import { Photo } from '../entity/Photo.entity';
-import { AppService } from '../app-service';
+import { UserService } from '../user-service';
 import { Connection, getConnection, createConnection } from 'typeorm';
 import { UserFactory } from './fixture/user-factory';
+import { PhotoFactory } from './fixture/photo-factory';
+import { PhotoService } from '../photo-service';
 import './database/pg-cleaner-hooks';
 
-describe('Photo Entity Tests', () => {
 
-  let appService: AppService;
+describe(PhotoService.name, () => {
+
   let connection: Connection;
+  let userService: UserService;
+  let photoService: PhotoService;
   let userFactory: UserFactory;
-  let user: User;
-  let photo: Photo;
+  let photoFactory: PhotoFactory;
   
   beforeAll(async () => {
     // setup test env
@@ -25,57 +28,69 @@ describe('Photo Entity Tests', () => {
       entities: ['../**/*.entity.ts'],
     });
   
-    const entityManager = getConnection('default').manager;
-    appService = new AppService(entityManager);
-    userFactory = new UserFactory(appService);
-    user = new User();
+    const defConn = getConnection('default').manager;
+    const userRepo = defConn.getRepository(User);
+    const photoRepo = defConn.getRepository(Photo);
+    userService = new UserService(userRepo);
+    userFactory = new UserFactory(userService);
+    photoService = new PhotoService(photoRepo);
+    photoFactory = new PhotoFactory(photoService);
   });
 
   afterAll(async () => {
     await connection.close();
   });
 
-  it('test User with Photo create', async () => {
-    // TODO: create a single photo for global user
-    const user1 = await userFactory.create({photos: ['test.jpg',]});
-    // 2. check if user is created
-    expect(user1.id).toBeDefined();
-    expect(user1.id).not.toBeNull();
-    expect(user1).toMatchObject(user);
-    expect(user1.photos).not.toBeUndefined();
-    expect(user1.photos).not.toBeNull();
-    expect(user1.photos[0].imageUrl).toMatch(/test/);
-  });
+
+  describe('#createUser', () => {
+    it('should create a User with Photos', async () => {
+      const user = userFactory.build();
+      const photo = photoFactory.build();
+      user.photos.push(photo);
+      const createdUser = await userService.createUser(user);
+      // todo lazy user photos
+      expect(createdUser.photos.length).toEqual(1);
+    });
+  })
   
-  it('test Photo update', async () => {
-    // 1. create a user
-    const user1 = await userFactory.create({photos: ['test.jpg',]});
-    expect(user1).toMatchObject(user);
-    expect(user1.id).not.toBeNaN();
-    expect(user1.photos.length).toBe(1);
+  describe('#updateUser', () => {
+    it('should update photos of the user', async () => {
+      // arrange
+      const photo = photoFactory.build();
+      const user = await userFactory.create({photos: [photo]});
+  
+      // act
+      const otherPhoto = photoFactory.build();
+      user.photos = [otherPhoto];
+      const updatedUser = await userService.updateUser(user);
     
-    const obj = { id: user1.id, firstname: 'NewName', lastname: 'NewLastName', photos: ['update.jpg'] };
-    const user2 = await appService.updateUser(obj);
-    expect(user2).toMatchObject(user);
-    expect(user2.id).not.toBeNaN();
-    expect(user2.photos.length).toBe(1);
-    expect(user2.photos[0].imageUrl).toMatch(/update/);
-    expect(user2.photos[0].imageUrl).not.toMatch(/test/);
+      // assert
+      expect(updatedUser.photos.length).toEqual(1);
+      expect(updatedUser.photos[0].imageUrl).toEqual([otherPhoto.imageUrl]);
+    });
   });
 
-  it('test User delete', () => {
-    // setup
-    // fetch
-    // delete
-    // 1. check
-    // 2. check
+  describe('#deleteUser', () => {
+    it('should delete a User with related Photos', async () => {
+      // create a user with 2 photos
+      // fetch this user from db and check
+      expect(user.id).toEqual(createdUser.id);
+      expect(user.photos.length).toEqual(2);
+      // delete
+      // 1. check
+      expect(photos.length).toEqual(0);
+      expect(user).toBeUndefined();
+    });
   });
 
-  it('test Photo delete', () => {
-    // setup
-    // fetch
-    // delete
-    // 1. check
-    // 2. check
+  describe('#deletePhoto', () => {
+    it('should delete a Photo', async () => {
+      // create a user with two photo
+      expect(user.id).toEqual(createdUser.id);
+      // fetch all photos for the given user
+      expect(photos.length).toEqual(2);
+      // delete
+      expect(photos.length).toEqual(1);
+    });
   });
 });

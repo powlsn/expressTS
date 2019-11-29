@@ -1,23 +1,28 @@
 import { Request, Response } from 'express';
-import { EntityManager, getManager } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Photo } from '../entity/Photo.entity';
+import { PhotoService } from '../photo-service';
 
 export class PhotoController {
-  constructor(readonly manager: EntityManager) {}
+  constructor(readonly service: PhotoService) {}
 
   public async getDeletePhoto(request: Request, response: Response): Promise<void> {
-    const photoRepo = this.manager.getRepository(Photo);
-    const photo = await photoRepo.findOne(request.params.id, { relations: ['user'] });
-    console.log("TCL: PhotoController -> constructor -> photo", photo)
+    // TODO fix this
+    // const photo = await this.repo.findOne(request.params.id, { relations: ['user'] });
+    // console.log("TCL: PhotoController -> constructor -> photo", photo)
     response.status(200).render('photo-delete', {
       title: 'Delete Photo',
-      photo: photo,
+      // photo: photo,
     });
   }
 
   public async deletePhoto(request: Request, response: Response): Promise<void> {
-    const uid = request.body.userid;
-    await this.manager.delete(Photo, request.params.id);
-    response.status(203).redirect(301, `/users/${uid}`);
+    const deleted = this.service.deletePhoto(parseInt(request.body.photoid));
+
+    if (!deleted) {
+      response.status(400).redirect(400, '/users');
+    }
+    // TODO response to user detail '/users/${user.id}'
+    response.status(203).redirect(301, `/users/${id}`);
   }
 }

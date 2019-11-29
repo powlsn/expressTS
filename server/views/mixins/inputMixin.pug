@@ -14,6 +14,11 @@ mixin inputMixin(obj)
         placeholder="http://add-your-photo-here.url"
         value=`${obj.imageUrl}`
       )
+      input(
+        type="hidden"
+        name=`photo[${obj.photoid}]`
+        value=`${obj.userid}`
+      )
       .input-group-append
         a(href=`/photos/delete/${obj.photoid}` class="btn btn-danger mb-2")
           i.fas.fa-times
