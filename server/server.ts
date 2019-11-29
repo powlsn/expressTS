@@ -14,8 +14,6 @@ import { UserController } from './controller/UserController';
 import { PhotoController } from './controller/photoController';
 import { UserService } from './user-service';
 import { PhotoService } from './photo-service';
-import { User } from './entity/User.entity';
-import { Photo } from './entity/Photo.entity';
 
 const options = require('./ormconfig.js');
 
@@ -29,13 +27,9 @@ export const server: express.Application = express();
 dbConnection
   .then(connection => {
     // setup typeORM
-    // const connectionName = connection.name;
-    // const entityManager = getConnection(connectionName).manager;
-    const userRepository = connection.getRepository(User);
-    const photoRepository = connection.getRepository(Photo);
-    const userService = new UserService(userRepository);
+    const userService = new UserService(connection);
     const userController = new UserController(userService);
-    const photoService = new PhotoService(photoRepository);
+    const photoService = new PhotoService(connection);
     const photoController = new PhotoController(photoService);
 
     server.use(methodOverride('_method'));

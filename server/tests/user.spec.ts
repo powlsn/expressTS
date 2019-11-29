@@ -1,16 +1,15 @@
-import { User } from '../entity/User.entity';
 import {
   getConnection,
   createConnection,
   Connection,
 } from 'typeorm';
 import { UserService } from '../user-service';
-import './database/pg-cleaner-hooks';
 import { UserFactory } from './fixture/user-factory';
+import './database/pg-cleaner-hooks';
 
 describe(UserService.name, () => {
   
-  let appService: UserService;
+  let userService: UserService;
   let connection: Connection;
   let userFactory: UserFactory;
   
@@ -27,9 +26,8 @@ describe(UserService.name, () => {
     });
     // TODO maybe a bit clean up
     const manager = getConnection('default').manager;
-    const userRepo = manager.getRepository(User);
-    appService = new UserService(userRepo);
-    userFactory = new UserFactory(appService);
+    userService = new UserService(connection);
+    userFactory = new UserFactory(userService);
   });
 
   afterAll(async () => {
@@ -39,14 +37,14 @@ describe(UserService.name, () => {
   // beforeEach() : dataBase cleaner!
   describe('getAllUsers', () => {
     it('should return an empty list', async () => {
-      let users = await appService.getAllUsers();
+      let users = await userService.getUsers();
       expect(users.length).toEqual(0);
     });
     it('should return all persisted users', async () => {
       const user1 = await userFactory.create();
       const user2 = await userFactory.create();
       
-      let users = await appService.getAllUsers();
+      let users = await userService.getUsers();
       expect(users.sort()).toEqual([user1, user2].sort());
     });
   })
@@ -54,11 +52,11 @@ describe(UserService.name, () => {
   describe('#createUser', () => {
     it('should create User', async () => {
       // here i should create a user and fetch from the db to test if it exists
-      let users = await appService.getAllUsers();
+      let users = await userService.getUsers();
       expect(users.length).toEqual(0);
       const user = await userFactory.build();
-      await appService.createUser(user);
-      users = await appService.getAllUsers();
+      await userService.createUser(user);
+      users = await userService.getUsers();
       expect(users.length).toEqual(1);
     });
 
@@ -67,8 +65,8 @@ describe(UserService.name, () => {
         firstname: 'der-Vorname',
         lastname: 'der-Nachname',
       });
-      const createdUser = await appService.createUser(user);
-      const loadedUser = await appService.getUser(createdUser.id);
+      const createdUser = await userService.createUser(user);
+      const loadedUser = await userService.getUser(createdUser.id);
       expect(loadedUser.firstname).toEqual('der-Vorname');
       expect(loadedUser.lastname).toEqual('der-Nachname');
     });
@@ -78,7 +76,7 @@ describe(UserService.name, () => {
 
     it('should return an object of type User', async () => {
       const newUser = userFactory.build();
-      const user = await appService.createUser(newUser);
+      const user = await userService.createUser(newUser);
       // typeof liefert object ^ liefert User type
       expect(user.constructor.name).toEqual('User');
     });
@@ -89,9 +87,9 @@ describe(UserService.name, () => {
       // 2. update user props
       user.firstname = 'NewName';
       user.lastname = 'NewLastName';      
-      user = await appService.updateUser(user);
+      user = await userService.updateUser(user);
       // 3. check user updated values
-      const reloadedUser = await appService.getUser(user.id);
+      const reloadedUser = await userService.getUser(user.id);
       expect(reloadedUser.firstname).toEqual(user.firstname);
       expect(reloadedUser.lastname).toEqual(user.lastname);
     });  
@@ -102,14 +100,14 @@ describe(UserService.name, () => {
       // 1. create users
       let user1 = await userFactory.create();
       let user2 = await userFactory.create();
-      expect((await appService.getAllUsers()).length).toEqual(2);
+      expect((await userService.getUsers()).length).toEqual(2);
       // 2. delete a user
-      user1 = await appService.deleteUser(user1.id);
+      user1 = await userService.deleteUser(user1.id);
       // check if the deleted user has an id (should be undefined)
-      expect((await appService.getAllUsers()).length).toEqual(1);
-      const loadUser1 = await appService.getUser(user1.id)
+      expect((await userService.getUsers()).length).toEqual(1);
+      const loadUser1 = await userService.getUser(user1.id)
       expect(loadUser1).toBeUndefined();
-      const loadUser2 = await appService.getUser(user2.id)
+      const loadUser2 = await userService.getUser(user2.id)
       expect(loadUser2).toBeDefined();
     });
   });

@@ -9,7 +9,7 @@ export class UserController {
   constructor(readonly service: UserService) {}
 
   public async getUsers(request: Request, response: Response): Promise<void> {
-    const user = await this.service.getAllUsers();
+    const user = await this.service.getUsers();
 
     if (!user) {
       response.redirect(400, '/users');

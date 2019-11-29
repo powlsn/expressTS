@@ -4,14 +4,13 @@ import { User } from "../../entity/User.entity";
 
 export class UserFactory {
 
-  constructor(private readonly appService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   // for later use with factory-ts
   json(params: object = {}) {
     return Object.assign({
       firstname: 'Max',
       lastname: 'Muster',
-      photos: []
     }, params
     )
   }
@@ -22,6 +21,6 @@ export class UserFactory {
 
   create(params: Object = {}): Promise<User> {
     const user = this.build(params);
-    return this.appService.createUser(user);
+    return this.userService.createUser(user);
   }
 }

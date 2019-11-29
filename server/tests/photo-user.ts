@@ -1,5 +1,3 @@
-import { User } from '../entity/User.entity';
-import { Photo } from '../entity/Photo.entity';
 import { UserService } from '../user-service';
 import { Connection, getConnection, createConnection } from 'typeorm';
 import { UserFactory } from './fixture/user-factory';
@@ -27,13 +25,10 @@ describe(PhotoService.name, () => {
       database: "exTest",
       entities: ['../**/*.entity.ts'],
     });
-  
-    const defConn = getConnection('default').manager;
-    const userRepo = defConn.getRepository(User);
-    const photoRepo = defConn.getRepository(Photo);
-    userService = new UserService(userRepo);
+    const manager = getConnection('default').manager;
+    userService = new UserService(connection);
     userFactory = new UserFactory(userService);
-    photoService = new PhotoService(photoRepo);
+    photoService = new PhotoService(connection);
     photoFactory = new PhotoFactory(photoService);
   });
 
@@ -46,8 +41,7 @@ describe(PhotoService.name, () => {
     it('should create a User with Photos', async () => {
       const user = userFactory.build();
       const photo = photoFactory.build();
-      user.photos.push(photo);
-      const createdUser = await userService.createUser(user);
+      const createdUser = await userService.createUser(user, [photo]);
       // todo lazy user photos
       expect(createdUser.photos.length).toEqual(1);
     });
@@ -56,13 +50,14 @@ describe(PhotoService.name, () => {
   describe('#updateUser', () => {
     it('should update photos of the user', async () => {
       // arrange
+      const user = userFactory.build();
       const photo = photoFactory.build();
-      const user = await userFactory.create({photos: [photo]});
+      const createdUser = await userFactory.create({photos: [photo]});
   
       // act
       const otherPhoto = photoFactory.build();
       user.photos = [otherPhoto];
-      const updatedUser = await userService.updateUser(user);
+      const updatedUser = await userService.updateUser(createdUser);
     
       // assert
       expect(updatedUser.photos.length).toEqual(1);
@@ -70,27 +65,27 @@ describe(PhotoService.name, () => {
     });
   });
 
-  describe('#deleteUser', () => {
-    it('should delete a User with related Photos', async () => {
-      // create a user with 2 photos
-      // fetch this user from db and check
-      expect(user.id).toEqual(createdUser.id);
-      expect(user.photos.length).toEqual(2);
-      // delete
-      // 1. check
-      expect(photos.length).toEqual(0);
-      expect(user).toBeUndefined();
-    });
-  });
+  // describe('#deleteUser', () => {
+  //   it('should delete a User with related Photos', async () => {
+  //     // create a user with 2 photos
+  //     // fetch this user from db and check
+  //     expect(user.id).toEqual(createdUser.id);
+  //     expect(user.photos.length).toEqual(2);
+  //     // delete
+  //     // 1. check
+  //     expect(photos.length).toEqual(0);
+  //     expect(user).toBeUndefined();
+  //   });
+  // });
 
-  describe('#deletePhoto', () => {
-    it('should delete a Photo', async () => {
-      // create a user with two photo
-      expect(user.id).toEqual(createdUser.id);
-      // fetch all photos for the given user
-      expect(photos.length).toEqual(2);
-      // delete
-      expect(photos.length).toEqual(1);
-    });
-  });
+  // describe('#deletePhoto', () => {
+  //   it('should delete a Photo', async () => {
+  //     // create a user with two photo
+  //     expect(user.id).toEqual(createdUser.id);
+  //     // fetch all photos for the given user
+  //     expect(photos.length).toEqual(2);
+  //     // delete
+  //     expect(photos.length).toEqual(1);
+  //   });
+  // });
 });
