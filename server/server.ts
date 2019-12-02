@@ -8,6 +8,7 @@ import { photoRouter } from './router/photoRouter';
 import { UserController } from './controller/UserController';
 import { PhotoController } from './controller/photoController';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const options = require('./ormconfig.js');
 
 const env = !process.env.NODE_ENV ? 'development' : process.env.NODE_ENV;

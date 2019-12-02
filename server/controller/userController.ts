@@ -16,7 +16,7 @@ export class UserController {
   private photoRepo: Repository<Photo> = this.connection.getRepository(Photo);
 
   public async getUsers(request: Request, response: Response): Promise<void> {
-    const user = await this.userService.getUsers(['photos']);
+    const user = await this.userService.getUsers();
 
     if (!user) {
       response.redirect(400, '/users');
@@ -48,15 +48,12 @@ export class UserController {
   }
 
   public async postUserCreate(request: Request, response: Response): Promise<void> {
-    // let user: User = requestUserMapper(request);
-    // user = await this.service.createUser(user);
-
-    let user = new User();
-    user.firstname = request.body.firstname;
-    user.lastname = request.body.lastname;
+    let user: User = requestUserMapper(request);
     user = await this.userService.createUser(user);
-    // const photo1 = new Photo();
-    // photo.imageUrl = 'abc';
+
+    // check if photos exists
+    // if true -> loop through -> set user on photo (photo.user = user)
+    // photo.save() like exampple below
     // TODO: run a method to check if some photos have been provided.
     const photo2 = new Photo();
     photo2.imageUrl = 'test img';
