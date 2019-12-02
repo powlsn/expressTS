@@ -1,20 +1,20 @@
-mixin inputEmptyMixin
+mixin inputEmptyMixin(obj)
   .form-row
     .input-group.col-md-4.mx-auto
       input(
         type="hidden"
-        name=`photo[0]`
+        name=`photo[${obj.id}]`
         value=""
       )
       input(
         class="form-control mb-2"
-        name="photo[0]"
+        name=`photo[${obj.id}]`
         type="text"
         placeholder="http://add-your-photo-here.url"
       )
       input(
         type="hidden"
-        name=`photo[0]`
-        value=""
+        name=`photo[${obj.id}]`
+        value=`${obj.userid}`
       )
         

@@ -15,12 +15,4 @@ export class Photo {
     { nullable: false, onDelete: 'CASCADE' },
   )
   user: User;
-
-  constructor(data?: Photo) {
-    if (data) {
-      this.id = data.id;
-      this.imageUrl = data.imageUrl;
-      this.user = data.user;
-    }
-  }
 }

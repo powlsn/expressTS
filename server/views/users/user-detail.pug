@@ -31,7 +31,7 @@ block content
           td(scope="row" colspan="4")
             h5 #{user.firstname} #{user.lastname} Fotos
         
-        if user.photos.length > 0
+        if user.photos
           each photo in user.photos
             tr
               td(scope="row") #{photo.id}

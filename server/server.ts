@@ -2,18 +2,11 @@ import * as path from 'path';
 import * as express from 'express';
 import * as methodOverride from 'method-override';
 import { urlencoded } from 'body-parser';
-import {
-  getConnection,
-  ConnectionOptions,
-  createConnection,
-  Connection,
-} from 'typeorm';
+import { ConnectionOptions, createConnection, Connection } from 'typeorm';
 import { userRouter } from './router/userRouter';
 import { photoRouter } from './router/photoRouter';
 import { UserController } from './controller/UserController';
 import { PhotoController } from './controller/photoController';
-import { UserService } from './user-service';
-import { PhotoService } from './photo-service';
 
 const options = require('./ormconfig.js');
 
@@ -27,10 +20,10 @@ export const server: express.Application = express();
 dbConnection
   .then(connection => {
     // setup typeORM
-    const userService = new UserService(connection);
-    const userController = new UserController(userService);
-    const photoService = new PhotoService(connection);
-    const photoController = new PhotoController(photoService);
+    // const userService = new UserService(connection);
+    // const photoService = new PhotoService(connection);
+    const userController = new UserController(connection);
+    const photoController = new PhotoController(connection);
 
     server.use(methodOverride('_method'));
     server.set('user_ctrl', userController);

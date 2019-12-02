@@ -31,10 +31,19 @@ block content
           imageUrl:`${photo.imageUrl}`,
           userid:`${user.id}`
         })
-      +inputEmptyMixin
+      +inputEmptyMixin({
+        id: 0,
+        userid: user.id
+      })
     else
-      +inputEmptyMixin
-      +inputEmptyMixin
+      +inputEmptyMixin({
+        id: 0,
+        userid: user.id
+      })
+      +inputEmptyMixin({
+        id: 1,
+        userid: user.id
+      })
     
     .form-row
       .form-group.col-md-4.offset-md-4

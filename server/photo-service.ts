@@ -1,5 +1,5 @@
-import { Repository, UpdateResult, DeleteResult, Connection } from "typeorm";
-import { Photo } from "./entity/Photo.entity";
+import { Repository, UpdateResult, DeleteResult, Connection } from 'typeorm';
+import { Photo } from './entity/Photo.entity';
 
 export class PhotoService {
   constructor(readonly connection: Connection) {
@@ -7,7 +7,7 @@ export class PhotoService {
   }
 
   private repo: Repository<Photo>;
-  
+
   public async createPhoto(photo: Photo): Promise<Photo> {
     return await this.repo.save(photo);
   }

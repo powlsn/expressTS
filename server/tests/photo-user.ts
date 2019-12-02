@@ -5,24 +5,22 @@ import { PhotoFactory } from './fixture/photo-factory';
 import { PhotoService } from '../photo-service';
 import './database/pg-cleaner-hooks';
 
-
 describe(PhotoService.name, () => {
-
   let connection: Connection;
   let userService: UserService;
   let photoService: PhotoService;
   let userFactory: UserFactory;
   let photoFactory: PhotoFactory;
-  
+
   beforeAll(async () => {
     // setup test env
     connection = await createConnection({
-      type: "postgres",
-      host: "localhost",
+      type: 'postgres',
+      host: 'localhost',
       port: 5432,
-      username: "postgres",
-      password: "Awesome1",
-      database: "exTest",
+      username: 'postgres',
+      password: 'Awesome1',
+      database: 'exTest',
       entities: ['../**/*.entity.ts'],
     });
     const manager = getConnection('default').manager;
@@ -36,29 +34,28 @@ describe(PhotoService.name, () => {
     await connection.close();
   });
 
-
   describe('#createUser', () => {
     it('should create a User with Photos', async () => {
       const user = userFactory.build();
       const photo = photoFactory.build();
-      const createdUser = await userService.createUser(user, [photo]);
+      const createdUser = await userService.createUser(user);
       // todo lazy user photos
       expect(createdUser.photos.length).toEqual(1);
     });
-  })
-  
+  });
+
   describe('#updateUser', () => {
     it('should update photos of the user', async () => {
       // arrange
       const user = userFactory.build();
       const photo = photoFactory.build();
-      const createdUser = await userFactory.create({photos: [photo]});
-  
+      const createdUser = await userFactory.create({ photos: [photo] });
+
       // act
       const otherPhoto = photoFactory.build();
       user.photos = [otherPhoto];
       const updatedUser = await userService.updateUser(createdUser);
-    
+
       // assert
       expect(updatedUser.photos.length).toEqual(1);
       expect(updatedUser.photos[0].imageUrl).toEqual([otherPhoto.imageUrl]);
