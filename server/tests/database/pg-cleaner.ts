@@ -16,7 +16,7 @@ export class PgCleaner {
       host: 'localhost',
       port: 5432,
       user: 'postgres',
-      password: 'Awesome1',
+      password: 'postgres',
       database: 'exTest',
     });
   }
@@ -31,15 +31,11 @@ export class PgCleaner {
 
   async run(): Promise<string[]> {
     const ormSystemTables = ['migrations']; // TypeORM system tables
-    console.log("TCL: PgCleaner -> ormSystemTables", ormSystemTables)
+    console.log('TCL: PgCleaner -> ormSystemTables', ormSystemTables);
     const allTables = await this.allTables();
     // const tablesToTruncate = allTables.without(ormSystemTables);
-    const tablesToTruncate = allTables.filter(
-        x => !ormSystemTables.includes(x),
-      );
-    const queries = tablesToTruncate.map(
-      table => `DELETE FROM ${this.defaultSchema}."${table}";`,
-    );
+    const tablesToTruncate = allTables.filter(x => !ormSystemTables.includes(x));
+    const queries = tablesToTruncate.map(table => `DELETE FROM ${this.defaultSchema}."${table}";`);
     await this.client.query(queries.join('\n'));
 
     return tablesToTruncate;

@@ -21,6 +21,6 @@ export class UserFactory {
 
   async create(params: object = {}): Promise<User> {
     const user = this.build(params);
-    return await this.userService.createUser(user);
+    return await this.userService.save(user);
   }
 }
