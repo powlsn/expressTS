@@ -21,6 +21,6 @@ export class PhotoFactory {
 
   async create(params: object = {}): Promise<Photo> {
     const photo = this.build(params);
-    return await this.photoService.createPhoto(photo);
+    return await this.photoService.save(photo);
   }
 }

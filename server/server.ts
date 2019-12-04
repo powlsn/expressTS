@@ -20,9 +20,6 @@ export const server: express.Application = express();
 
 dbConnection
   .then(connection => {
-    // setup typeORM
-    // const userService = new UserService(connection);
-    // const photoService = new PhotoService(connection);
     const userController = new UserController(connection);
     const photoController = new PhotoController(connection);
 

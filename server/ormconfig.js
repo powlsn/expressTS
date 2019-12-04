@@ -16,7 +16,7 @@ module.exports = [
   Object.assign({}, common, {
     name: 'development',
     username: 'postgres',
-    password: 'Awesome1',
+    password: 'postgres',
     synchronize: false,
     logging: true,
     database: 'exDev',
@@ -24,7 +24,7 @@ module.exports = [
   Object.assign({}, common, {
     name: 'test',
     username: 'postgres',
-    password: 'Awesome1',
+    password: 'postgres',
     synchronize: false,
     logging: false,
     database: 'exTest',

@@ -26,7 +26,7 @@ function photoMapper(elem: string[]): Photo {
   }
 }
 
-function photoArray(photos: string[][]): Photo[] {
+function requestPhotoMapper(photos: string[][]): Photo[] {
   const photoArray: Photo[] = [];
   photos.forEach(element => {
     photoArray.push(photoMapper(element));
@@ -101,4 +101,4 @@ function photoArray(photos: string[][]): Photo[] {
 // }
 
 // function to filter empty shit!
-export { photoArray };
+export { requestPhotoMapper };

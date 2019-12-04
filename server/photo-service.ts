@@ -6,19 +6,27 @@ export class PhotoService {
 
   private photoRepo: Repository<Photo> = this.connection.getRepository(Photo);
 
-  public async createPhoto(photo: Photo): Promise<Photo> {
+  public async save(photo: Photo[]): Promise<Photo[]> {
     return await this.photoRepo.save(photo);
   }
 
-  public async getPhotoById(id: number): Promise<Photo> {
+  public async getByUserId(id: number): Promise<Photo[]> {
+    return await this.photoRepo.find({ where: { userId: id } });
+  }
+
+  public async getById(id: number): Promise<Photo> {
     return await this.photoRepo.findOne(id, { relations: ['user'] });
   }
 
-  public async updatePhoto(photo: Photo): Promise<UpdateResult> {
+  public async update(photo: Photo): Promise<UpdateResult> {
     return await this.photoRepo.update(photo.id, photo);
   }
 
-  public async deletePhoto(id: number): Promise<DeleteResult> {
+  public async deleteById(id: number): Promise<DeleteResult> {
     return await this.photoRepo.delete(id);
+  }
+
+  public async delete(photo: Photo[]): Promise<Photo[]> {
+    return await this.photoRepo.remove(photo);
   }
 }

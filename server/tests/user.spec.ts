@@ -61,7 +61,7 @@ describe(UserService.name, () => {
         lastname: 'der-Nachname',
       });
       const createdUser = await userService.createUser(user);
-      const loadedUser = await userService.getUser(createdUser.id);
+      const loadedUser = await userService.getById(createdUser.id);
       expect(loadedUser.firstname).toEqual('der-Vorname');
       expect(loadedUser.lastname).toEqual('der-Nachname');
     });
@@ -83,7 +83,7 @@ describe(UserService.name, () => {
       user.lastname = 'NewLastName';
       user = await userService.updateUser(user);
       // 3. check user updated values
-      const reloadedUser = await userService.getUser(user.id);
+      const reloadedUser = await userService.getById(user.id);
       expect(reloadedUser.firstname).toEqual(user.firstname);
       expect(reloadedUser.lastname).toEqual(user.lastname);
     });
@@ -99,9 +99,9 @@ describe(UserService.name, () => {
       user1 = await userService.deleteUser(user1.id);
       // check if the deleted user has an id (should be undefined)
       expect((await userService.getUsers()).length).toEqual(1);
-      const loadUser1 = await userService.getUser(user1.id);
+      const loadUser1 = await userService.getById(user1.id);
       expect(loadUser1).toBeUndefined();
-      const loadUser2 = await userService.getUser(user2.id);
+      const loadUser2 = await userService.getById(user2.id);
       expect(loadUser2).toBeDefined();
     });
   });

@@ -6,25 +6,26 @@ export class UserService {
 
   private userRepo: Repository<User> = this.connection.getRepository(User);
 
-  public async getUsers(): Promise<User[]> {
+  public async getUser(): Promise<User[]> {
     return await this.userRepo.find();
   }
 
-  public async getUser(id: number, relation?: string[]): Promise<User> {
+  public async getById(id: number, relation?: string[]): Promise<User> {
     return await this.userRepo.findOne({ where: { id: id }, relations: relation });
   }
 
-  public async createUser(user: User): Promise<User> {
+  public async save(user: User): Promise<User> {
     return await this.userRepo.save(user);
   }
 
-  public async updateUser(user: User): Promise<User> {
-    const savedUser = await this.userRepo.save(user);
-    return await this.getUser(savedUser.id, ['photos']);
+  public async update(user: User): Promise<User> {
+    const oldUser = await this.userRepo.findOne(user.id);
+    const updated = this.userRepo.merge(oldUser, user);
+    return await this.userRepo.save(updated);
   }
 
-  public async deleteUser(id: number): Promise<User> {
-    const user = await this.getUser(id);
+  public async delete(id: number): Promise<User> {
+    const user = await this.getById(id);
     return await this.userRepo.remove(user);
   }
 }
